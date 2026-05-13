@@ -1,4 +1,4 @@
-package views;
+package com.example.demo.view;
 
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
