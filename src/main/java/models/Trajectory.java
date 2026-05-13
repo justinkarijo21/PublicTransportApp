@@ -1,6 +1,7 @@
 package models;
 
 import java.util.List;
+import views.TrajectorySelectionView;
 
 public class Trajectory {
 

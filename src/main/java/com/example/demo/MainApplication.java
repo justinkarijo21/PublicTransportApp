@@ -3,6 +3,7 @@ package com.example.demo;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import com.example.demo.Launcher;
 
 public class MainApplication extends Application {
 

@@ -7,7 +7,7 @@ import models.VasteTrajecten;
 public class AppFactory {
 
 
-        public static List<Trajectory> getTrajecten() {
+        public static List<Trajectory> getTrajectory() {
             return VasteTrajecten.getAlleTrajecten();
 
         }

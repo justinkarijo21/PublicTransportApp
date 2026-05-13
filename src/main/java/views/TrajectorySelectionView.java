@@ -1,5 +1,6 @@
 package views;
 
+import models.Trajectory;
 import com.example.demo.AppFactory;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -7,7 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
-import models.Trajectory;
+
 
 public class TrajectorySelectionView {
 
@@ -16,7 +17,7 @@ public class TrajectorySelectionView {
         Label tijdenLabel = new Label("Beschikbare tijden:");
 
         ComboBox<Trajectory> trajectoryChooser = new ComboBox<>(
-                FXCollections.observableArrayList(AppFactory.getTrajecten())
+                FXCollections.observableArrayList(AppFactory.getTrajectory())
         );
         trajectoryChooser.setPromptText("Selecteer een traject");
 
