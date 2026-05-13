@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox spacing="12.0" xmlns:fx="http://javafx.com/fxml"
@@ -13,8 +15,13 @@
     </padding>
 
     <Label text="Choose a route" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-    <ComboBox fx:id="routeBox" promptText="Select a route" maxWidth="1.7976931348623157E308"/>
+    <HBox spacing="10.0">
+        <ComboBox fx:id="routeBox" promptText="Select a route" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
+        <Button fx:id="swapButton" text="Swap (↔)" onAction="#onSwap"/>
+    </HBox>
 
     <Label text="Times: Start → End" style="-fx-padding: 6 0 0 0;"/>
     <ListView fx:id="timesList" prefHeight="240.0"/>
+
+    <Label fx:id="infoLabel" text="" style="-fx-text-fill: #666666;"/>
 </VBox>

@@ -3,6 +3,8 @@ package com.example.demo.model;
 import java.util.List;
 
 public class Trajectory {
+    private static final String ARROW = " → ";
+
     private final String departure;
     private final String arrival;
     private final List<String> departureTimes;
@@ -33,6 +35,6 @@ public class Trajectory {
 
     @Override
     public String toString() {
-        return departure + " \u2192 " + arrival;
+        return departure + ARROW + arrival;
     }
 }
