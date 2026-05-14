@@ -1,9 +1,9 @@
-package com.example.demo;
+package com.example.demo.app;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import com.example.demo.Launcher;
+import com.example.demo.view.DashboardView;
 
 public class MainApplication extends Application {
 
@@ -12,12 +12,8 @@ public class MainApplication extends Application {
         DashboardView startScreen = new DashboardView();
 
         Scene scene = new Scene(startScreen.getRoot(), 800, 600);
-        stage.setTitle("OV Planner Dashboard");
+        stage.setTitle("Transit Planner");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

@@ -1,0 +1,40 @@
+package com.example.demo.view;
+
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.layout.BorderPane;
+import com.example.demo.view.TransportTypeBox;
+
+import java.io.IOException;
+
+public class DashboardView {
+    private final BorderPane mainLayout;
+
+    public DashboardView() {
+        this.mainLayout = new BorderPane();
+        this.mainLayout.setPadding(new Insets(20));
+
+        // Create modules
+        TransportTypeBox transportSection = new TransportTypeBox();
+
+        // Place modules on the dashboard
+        mainLayout.setTop(transportSection);
+        mainLayout.setCenter(loadTrajectorySelection());
+
+        // Add spacing between modules
+        BorderPane.setMargin(transportSection, new Insets(0, 0, 20, 0));
+    }
+
+    private Parent loadTrajectorySelection() {
+        try {
+            return FXMLLoader.load(DashboardView.class.getResource("/com/example/demo/view/trajectory-selection-view.fxml"));
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to load trajectory selection view", e);
+        }
+    }
+
+    public BorderPane getRoot() {
+        return mainLayout;
+    }
+}
