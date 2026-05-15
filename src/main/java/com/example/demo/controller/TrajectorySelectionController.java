@@ -42,7 +42,9 @@ public class TrajectorySelectionController {
         }
 
         Trajectory reverse = routeBox.getItems().stream()
-                .filter(t -> t.getDeparture().equals(selected.getArrival()) && t.getArrival().equals(selected.getDeparture()))
+                .filter(t ->
+                        t.getDeparture().equals(selected.getArrival()) &&
+                        t.getArrival().equals(selected.getDeparture()))
                 .findFirst()
                 .orElse(null);
 
@@ -62,6 +64,7 @@ public class TrajectorySelectionController {
             timesList.setItems(FXCollections.observableArrayList());
             return;
         }
+
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
         var items = selected.getDepartureTimes().stream()
                 .map(departure -> {
