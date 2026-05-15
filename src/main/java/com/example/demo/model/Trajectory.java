@@ -33,6 +33,22 @@ public class Trajectory {
         return travelMinutes;
     }
 
+    public String getDurationString() {
+        int hours = travelMinutes / 60;
+        int minutes = travelMinutes % 60;
+
+        if (hours == 0) {
+            // Alleen minuten
+            return minutes + " minuten";
+        } else if (minutes == 0) {
+            // Alleen uren
+            return hours + " uur";
+        } else {
+            // Beide uren en minuten
+            return hours + " uur " + minutes + " minuten";
+        }
+    }
+
     @Override
     public String toString() {
         return departure + ARROW + arrival;
