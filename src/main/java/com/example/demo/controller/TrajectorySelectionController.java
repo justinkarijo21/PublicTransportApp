@@ -67,7 +67,7 @@ public class TrajectorySelectionController {
                 .map(departure -> {
                     LocalTime departureTime = LocalTime.parse(departure);
                     LocalTime arrivalTime = departureTime.plusMinutes(selected.getTravelMinutes());
-                    return timeFormat.format(departureTime) + " \u2192 " + timeFormat.format(arrivalTime);
+                    return timeFormat.format(departureTime) + " \u2192 " + timeFormat.format(arrivalTime) + "\t(" + selected.getDurationString() + ")";
                 })
                 .toList();
 
