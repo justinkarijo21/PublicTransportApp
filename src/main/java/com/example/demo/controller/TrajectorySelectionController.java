@@ -11,6 +11,7 @@ import javafx.scene.control.ListView;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class TrajectorySelectionController {
     @FXML
@@ -25,11 +26,24 @@ public class TrajectorySelectionController {
     @FXML
     private ListView<String> timesList;
 
+    private List<Trajectory> allRoutes;
+    private boolean updatingRouteBox;
+
     @FXML
     private void initialize() {
-        routeBox.setItems(FXCollections.observableArrayList(AppFactory.getTrajectory()));
+        allRoutes = AppFactory.getTrajectory();
+
+        routeBox.setItems(FXCollections.observableArrayList(allRoutes));
+        routeBox.setEditable(true);
         routeBox.getSelectionModel().selectFirst();
-        routeBox.setOnAction(e -> refreshTimes());
+
+        routeBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                refreshTimes();
+            }
+        });
+        routeBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> filterRoutes(newValue));
+
         infoLabel.setText("");
         refreshTimes();
     }
@@ -54,6 +68,40 @@ public class TrajectorySelectionController {
         infoLabel.setText("");
         routeBox.getSelectionModel().select(reverse);
         refreshTimes();
+    }
+
+    // filtert routes op vertrek, aankomst of volledige routenaam
+    private void filterRoutes(String searchText) {
+        if (updatingRouteBox) {
+            return;
+        }
+
+        updatingRouteBox = true;
+        try {
+            String typedText = searchText == null ? "" : searchText;
+            String search = typedText.toLowerCase().trim();
+
+            var filteredRoutes = allRoutes.stream()
+                    .filter(route ->
+                            route.getDeparture().toLowerCase().contains(search)
+                                    || route.getArrival().toLowerCase().contains(search)
+                                    || route.toString().toLowerCase().contains(search)
+                    )
+                    .toList();
+
+            routeBox.setItems(FXCollections.observableArrayList(filteredRoutes));
+            routeBox.getEditor().setText(typedText);
+            routeBox.getEditor().positionCaret(typedText.length());
+
+            if (filteredRoutes.isEmpty()) {
+                timesList.setItems(FXCollections.observableArrayList());
+                infoLabel.setText("Geen route gevonden.");
+            } else {
+                infoLabel.setText("");
+            }
+        } finally {
+            updatingRouteBox = false;
+        }
     }
 
     private void refreshTimes() {
