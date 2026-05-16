@@ -20,6 +20,10 @@ public class TrajectorySelectionController {
     @FXML
     private Button swapButton;
 
+    // knop naast Swap om de eerste gevonden route te kiezen
+    @FXML
+    private Button searchButton;
+
     @FXML
     private Label infoLabel;
 
@@ -48,25 +52,78 @@ public class TrajectorySelectionController {
         refreshTimes();
     }
 
+    // bepaalt welke route gebruikt moet worden voor Swap
+    private Trajectory getSelectedRouteForSwap() {
+        Trajectory selected = routeBox.getValue();
+
+        if (selected != null) {
+            return selected;
+        }
+
+        if (!routeBox.getItems().isEmpty()) {
+            return routeBox.getItems().get(0);
+        }
+
+        return null;
+    }
+
     @FXML
     private void onSwap() {
-        Trajectory selected = routeBox.getValue();
+        // werkt ook als gebruiker alleen heeft getypt maar nog niet op Zoeken heeft gedrukt
+        Trajectory selected = getSelectedRouteForSwap();
+
         if (selected == null) {
+            infoLabel.setText("Kies eerst een route.");
             return;
         }
 
-        Trajectory reverse = routeBox.getItems().stream()
-                .filter(t -> t.getDeparture().equals(selected.getArrival()) && t.getArrival().equals(selected.getDeparture()))
+        // zoek de omgekeerde route in alle routes, niet alleen in de gefilterde lijst
+        Trajectory reverse = allRoutes.stream()
+                .filter(route ->
+                        route.getDeparture().equals(selected.getArrival())
+                                && route.getArrival().equals(selected.getDeparture())
+                )
                 .findFirst()
                 .orElse(null);
 
         if (reverse == null) {
-            infoLabel.setText("No return trip found.");
+            infoLabel.setText("Geen omgekeerde route gevonden.");
             return;
         }
 
+        // voorkom dat de zoek-listener opnieuw onbedoeld gaat filteren
+        updatingRouteBox = true;
+
+        try {
+            routeBox.setItems(FXCollections.observableArrayList(allRoutes));
+            routeBox.getSelectionModel().select(reverse);
+            routeBox.setValue(reverse);
+            routeBox.getEditor().setText(reverse.toString());
+            routeBox.getEditor().positionCaret(reverse.toString().length());
+            routeBox.hide();
+
+            infoLabel.setText("");
+            refreshTimes();
+        } finally {
+            updatingRouteBox = false;
+        }
+    }
+    // kiest de eerste route uit de gefilterde lijst wanneer de gebruiker op Zoeken klikt
+    @FXML
+    private void onSearch() {
+        if (routeBox.getItems().isEmpty()) {
+            timesList.setItems(FXCollections.observableArrayList());
+            infoLabel.setText("Geen route gevonden.");
+            return;
+        }
+
+        Trajectory firstRoute = routeBox.getItems().get(0);
+        routeBox.getSelectionModel().select(firstRoute);
+        routeBox.setValue(firstRoute);
+        routeBox.getEditor().setText(firstRoute.toString());
+        routeBox.hide();
+
         infoLabel.setText("");
-        routeBox.getSelectionModel().select(reverse);
         refreshTimes();
     }
 
@@ -93,12 +150,17 @@ public class TrajectorySelectionController {
             routeBox.getEditor().setText(typedText);
             routeBox.getEditor().positionCaret(typedText.length());
 
+
             if (filteredRoutes.isEmpty()) {
                 timesList.setItems(FXCollections.observableArrayList());
                 infoLabel.setText("Geen route gevonden.");
-            } else {
-                infoLabel.setText("");
+                return;
             }
+
+            routeBox.show();
+
+                infoLabel.setText("");
+
         } finally {
             updatingRouteBox = false;
         }
