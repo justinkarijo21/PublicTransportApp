@@ -17,6 +17,7 @@
     <Label text="Choose a route" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
     <HBox spacing="10.0">
         <ComboBox fx:id="routeBox" promptText="Select a route" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
+        <Button fx:id="searchButton" text="Zoeken" onAction="#onSearch"/>
         <Button fx:id="swapButton" text="Swap (↔)" onAction="#onSwap"/>
     </HBox>
 
