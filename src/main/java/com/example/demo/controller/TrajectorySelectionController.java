@@ -20,7 +20,7 @@ public class TrajectorySelectionController {
     @FXML
     private Button swapButton;
 
-    // knop naast Swap om de eerste gevonden route te kiezen
+    // knop naast Swap om de eerste gevonden route te kiezen.
     @FXML
     private Button searchButton;
 
