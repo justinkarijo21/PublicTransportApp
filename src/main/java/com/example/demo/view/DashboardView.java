@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
-import com.example.demo.view.TransportTypeBox;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
@@ -20,7 +20,16 @@ public class DashboardView {
 
         // Place modules on the dashboard
         mainLayout.setTop(transportSection);
-        mainLayout.setCenter(loadTrajectorySelection());
+        //mainLayout.setCenter(loadTrajectorySelection());
+        VBox centerContent = new VBox();
+        centerContent.setSpacing(20);
+
+        centerContent.getChildren().addAll(
+                loadTrajectorySelection(),
+                new AssistanceToggle()
+        );
+
+        mainLayout.setCenter(centerContent);
 
         // Add spacing between modules
         BorderPane.setMargin(transportSection, new Insets(0, 0, 20, 0));
