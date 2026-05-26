@@ -12,7 +12,7 @@ public class MainApplication extends Application {
         DashboardView startScreen = new DashboardView();
 
         Scene scene = new Scene(startScreen.getRoot(), 800, 600);
-        stage.setTitle("Transit Planner");
+        stage.setTitle("Reis Planner");
         stage.setScene(scene);
         stage.show();
     }

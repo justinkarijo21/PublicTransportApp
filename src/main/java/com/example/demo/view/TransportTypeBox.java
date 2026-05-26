@@ -21,7 +21,7 @@ public class TransportTypeBox extends HBox {
         );
 
         SelectionButton trainButton = new SelectionButton(
-                "Train",
+                "Trein",
                 transportTypeGroup,
                 createIcon("/icons/train icon yellow.png")
         );

@@ -39,7 +39,7 @@ public class DashboardView {
         try {
             return FXMLLoader.load(DashboardView.class.getResource("/com/example/demo/view/trajectory-selection-view.fxml"));
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to load trajectory selection view", e);
+            throw new IllegalStateException("Het laden van de trajectselectieweergave is mislukt.", e);
         }
     }
 
