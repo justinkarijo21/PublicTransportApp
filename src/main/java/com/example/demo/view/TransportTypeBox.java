@@ -31,6 +31,12 @@ public class TransportTypeBox extends HBox {
 
         busButton.setSelected(true);
 
+        transportTypeGroup.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal == null) {
+                transportTypeGroup.selectToggle(oldVal);
+            }
+        });
+
         this.getChildren().addAll(busButton, trainButton);
         this.setAlignment(Pos.CENTER_LEFT);
         this.setSpacing(0);

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.TransportType;
+import com.example.demo.model.Trajectory;
 import com.example.demo.app.AppFactory;
 import com.example.demo.model.Trajectory;
 import com.example.demo.view.TransportTypeBox;
@@ -50,19 +51,29 @@ public class TrajectorySelectionController {
                 refreshTimes();
             }
         });
-        routeBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> filterRoutes(newValue));
+        routeBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!updatingRouteBox) {
+                filterRoutes(newValue);
+            }
+        });
 
         infoLabel.setText("");
 
     }
     //zorgt voor de switch in tijden bij keuze bus en trein.
     private void filterByTransportType(TransportType transportType) {
-        var filteredRoutes = allRoutes.stream()
-                .filter(route -> route.getTransportType() == transportType)
-                .toList();
+        updatingRouteBox = true;
+        try {
+            var filteredRoutes = allRoutes.stream()
+                    .filter(route -> route.getTransportType() == transportType)
+                    .toList();
 
-        routeBox.setItems(FXCollections.observableArrayList(filteredRoutes));
-        routeBox.getSelectionModel().selectFirst();
+            routeBox.setItems(FXCollections.observableArrayList(filteredRoutes));
+            routeBox.getEditor().clear(); // Clear search box when switching type
+            routeBox.getSelectionModel().selectFirst();
+        } finally {
+            updatingRouteBox = false;
+        }
     }
 
     // bepaalt welke route gebruikt moet worden voor Swap
@@ -131,14 +142,19 @@ public class TrajectorySelectionController {
             return;
         }
 
-        Trajectory firstRoute = routeBox.getItems().get(0);
-        routeBox.getSelectionModel().select(firstRoute);
-        routeBox.setValue(firstRoute);
-        routeBox.getEditor().setText(firstRoute.toString());
-        routeBox.hide();
+        updatingRouteBox = true;
+        try {
+            Trajectory firstRoute = routeBox.getItems().get(0);
+            routeBox.getSelectionModel().select(firstRoute);
+            routeBox.setValue(firstRoute);
+            routeBox.getEditor().setText(firstRoute.toString());
+            routeBox.hide();
 
-        infoLabel.setText("");
-        refreshTimes();
+            infoLabel.setText("");
+            refreshTimes();
+        } finally {
+            updatingRouteBox = false;
+        }
     }
 
     // filtert routes op vertrek, aankomst of volledige routenaam
@@ -151,8 +167,12 @@ public class TrajectorySelectionController {
         try {
             String typedText = searchText == null ? "" : searchText;
             String search = typedText.toLowerCase().trim();
+            TransportType selectedType = transportTypeBox.getSelectedType();
+            TransportType typeToFilter = (selectedType != null) ? selectedType : TransportType.BUS;
 
             var filteredRoutes = allRoutes.stream()
+                    .filter(route -> route.getTransportType() == typeToFilter)
+
                     .filter(route ->
                             route.getDeparture().toLowerCase().contains(search)
                                     || route.getArrival().toLowerCase().contains(search)
@@ -164,7 +184,6 @@ public class TrajectorySelectionController {
             routeBox.getEditor().setText(typedText);
             routeBox.getEditor().positionCaret(typedText.length());
 
-
             if (filteredRoutes.isEmpty()) {
                 timesList.setItems(FXCollections.observableArrayList());
                 infoLabel.setText("Geen route gevonden.");
@@ -172,8 +191,7 @@ public class TrajectorySelectionController {
             }
 
             routeBox.show();
-
-                infoLabel.setText("");
+            infoLabel.setText("");
 
         } finally {
             updatingRouteBox = false;
