@@ -20,21 +20,21 @@ public class AssistanceToggle extends VBox {
         //Padding rondom
         setPadding(new Insets(10));
 
-        Label title = new Label("Assistentie");
+        Label title = new Label("Wilt u assistentie tijdens uw Reis");
 
-        toggle = new ToggleButton("UIT");
-        statusLabel = new Label("Assistentie staat UIT");
+        toggle = new ToggleButton("NEE");
+        statusLabel = new Label("U reist zelfstandig");
 
         //Als gebruiker klikt word het geupdate
 
         toggle.selectedProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal) {
-                toggle.setText("AAN");
-                statusLabel.setText("Assistentie staat AAN");
+                toggle.setText("JA");
+                statusLabel.setText("U krijgt Assistentie tijdens uw reis");
 
             } else {
                 toggle.setText("UIT");
-                statusLabel.setText("Assistentie staat UIT");
+                statusLabel.setText("U reist zelfstandig");
             }
         });
         getChildren().addAll(title, toggle, statusLabel);
