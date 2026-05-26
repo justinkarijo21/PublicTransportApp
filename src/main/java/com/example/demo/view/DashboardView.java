@@ -15,16 +15,10 @@ public class DashboardView {
         this.mainLayout = new BorderPane();
         this.mainLayout.setPadding(new Insets(20));
 
-        // Create modules
-        TransportTypeBox transportSection = new TransportTypeBox();
 
-        // Place modules on the dashboard
-        mainLayout.setTop(transportSection);
         mainLayout.setCenter(loadTrajectorySelection());
 
-        // Add spacing between modules
-        BorderPane.setMargin(transportSection, new Insets(0, 0, 20, 0));
-    }
+
 
     private Parent loadTrajectorySelection() {
         try {

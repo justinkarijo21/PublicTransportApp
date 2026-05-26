@@ -24,4 +24,12 @@ public class TransportTypeBox extends HBox {
         SelectionButton chosenButton = (SelectionButton) transportTypeGroup.getSelectedToggle();
         return (chosenButton != null) ? chosenButton.getText() : "";
     }
+    public void setOnTransportTypeChanged(java.util.function.Consumer<String> callback) {
+        transportTypeGroup.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                callback.accept(getSelectedType());
+            }
+        });
+    }
 }
+

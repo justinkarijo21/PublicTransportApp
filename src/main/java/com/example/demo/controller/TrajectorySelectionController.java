@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.app.AppFactory;
 import com.example.demo.model.Trajectory;
+import com.example.demo.view.TransportTypeBox;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -30,17 +31,17 @@ public class TrajectorySelectionController {
     @FXML
     private ListView<String> timesList;
 
+    @FXML
+    private TransportTypeBox transportTypeBox;
+
     private List<Trajectory> allRoutes;
     private boolean updatingRouteBox;
 
     @FXML
     private void initialize() {
         allRoutes = AppFactory.getTrajectory();
-
-        routeBox.setItems(FXCollections.observableArrayList(allRoutes));
-        routeBox.setEditable(true);
-        routeBox.getSelectionModel().selectFirst();
-
+        transportTypeBox.setOnTransportTypeChanged(transportType -> filterByTransportType(transportType));
+        filterByTransportType("Bus");//standaard filteren op bus
         routeBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 refreshTimes();
@@ -49,7 +50,16 @@ public class TrajectorySelectionController {
         routeBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> filterRoutes(newValue));
 
         infoLabel.setText("");
-        refreshTimes();
+
+    }
+    //zorgt voor de switch in tijden bij keuze bus en trein.
+    private void filterByTransportType(String transportType) {
+        var filteredRoutes = allRoutes.stream()
+                .filter(route -> route.getTransportType().equals(transportType))
+                .toList();
+
+        routeBox.setItems(FXCollections.observableArrayList(filteredRoutes));
+        routeBox.getSelectionModel().selectFirst();
     }
 
     // bepaalt welke route gebruikt moet worden voor Swap
@@ -82,6 +92,7 @@ public class TrajectorySelectionController {
                 .filter(route ->
                         route.getDeparture().equals(selected.getArrival())
                                 && route.getArrival().equals(selected.getDeparture())
+                                && route.getTransportType().equals(selected.getTransportType())
                 )
                 .findFirst()
                 .orElse(null);
@@ -95,7 +106,7 @@ public class TrajectorySelectionController {
         updatingRouteBox = true;
 
         try {
-            routeBox.setItems(FXCollections.observableArrayList(allRoutes));
+
             routeBox.getSelectionModel().select(reverse);
             routeBox.setValue(reverse);
             routeBox.getEditor().setText(reverse.toString());
