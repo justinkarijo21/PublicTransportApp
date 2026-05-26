@@ -1,5 +1,6 @@
 package com.example.demo.view;
 
+import com.example.demo.view.TransportTypeBox;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -14,6 +15,7 @@ public class DashboardView {
     public DashboardView() {
         this.mainLayout = new BorderPane();
         this.mainLayout.setPadding(new Insets(20));
+
 
         // Create modules
         TransportTypeBox transportSection = new TransportTypeBox();
@@ -34,6 +36,11 @@ public class DashboardView {
         // Add spacing between modules
         BorderPane.setMargin(transportSection, new Insets(0, 0, 20, 0));
     }
+
+
+        mainLayout.setCenter(loadTrajectorySelection());
+    } // <-- Added closing brace for the constructor
+
 
     private Parent loadTrajectorySelection() {
         try {

@@ -9,12 +9,18 @@ public class Trajectory {
     private final String arrival;
     private final List<String> departureTimes;
     private final int travelMinutes;
+    private final TransportType transportType;
 
-    public Trajectory(String departure, String arrival, List<String> departureTimes, int travelMinutes) {
+    public Trajectory(String departure, String arrival, List<String> departureTimes, int travelMinutes, TransportType transportType) {
         this.departure = departure;
         this.arrival = arrival;
         this.departureTimes = departureTimes;
         this.travelMinutes = travelMinutes;
+        this.transportType = transportType;
+    }
+
+    public TransportType getTransportType(){
+        return transportType;
     }
 
     public String getDeparture() {
