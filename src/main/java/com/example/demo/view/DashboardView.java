@@ -16,8 +16,6 @@ public class DashboardView {
         this.mainLayout = new BorderPane();
         this.mainLayout.setPadding(new Insets(20));
 
-        mainLayout.setCenter(loadTrajectorySelection());
-    } // <-- Added closing brace for the constructor
         // Create modules
         TransportTypeBox transportSection = new TransportTypeBox();
 
