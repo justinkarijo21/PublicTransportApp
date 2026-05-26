@@ -21,7 +21,7 @@
     <HBox spacing="10.0">
         <ComboBox fx:id="routeBox" promptText="Select a route" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
         <Button fx:id="searchButton" text="Zoeken" onAction="#onSearch"/>
-        <Button fx:id="swapButton" text="Swap (↔)" onAction="#onSwap"/>
+        <Button fx:id="swapButton" text="Wissel (↔)" onAction="#onSwap"/>
     </HBox>
 
     <Label text="Times: Start → End" style="-fx-padding: 6 0 0 0;"/>
