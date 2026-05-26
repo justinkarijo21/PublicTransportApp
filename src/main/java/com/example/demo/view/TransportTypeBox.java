@@ -1,5 +1,6 @@
 package com.example.demo.view;
 
+import com.example.demo.model.TransportType;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
@@ -15,16 +16,18 @@ public class TransportTypeBox extends HBox {
         this.transportTypeGroup = new ToggleGroup();
 
         SelectionButton busButton = new SelectionButton(
-                "Bus",
+                TransportType.BUS.getLabel(),
                 transportTypeGroup,
                 createIcon("/icons/bus icon green.png")
         );
+        busButton.setUserData(TransportType.BUS);
 
         SelectionButton trainButton = new SelectionButton(
-                "Train",
+                TransportType.TREIN.getLabel(),
                 transportTypeGroup,
                 createIcon("/icons/train icon yellow.png")
         );
+        trainButton.setUserData(TransportType.TREIN);
 
         busButton.setSelected(true);
 
@@ -46,11 +49,12 @@ public class TransportTypeBox extends HBox {
         return icon;
     }
 
-    public String getSelectedType() {
+    public TransportType getSelectedType() {
         SelectionButton chosenButton = (SelectionButton) transportTypeGroup.getSelectedToggle();
-        return (chosenButton != null) ? chosenButton.getText() : "";
+        return (chosenButton != null) ? (TransportType) chosenButton.getUserData() : null;
     }
-    public void setOnTransportTypeChanged(java.util.function.Consumer<String> callback) {
+
+    public void setOnTransportTypeChanged(java.util.function.Consumer<TransportType> callback) {
         transportTypeGroup.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 callback.accept(getSelectedType());

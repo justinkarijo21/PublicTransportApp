@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.TransportType;
 import com.example.demo.app.AppFactory;
 import com.example.demo.model.Trajectory;
 import com.example.demo.view.TransportTypeBox;
@@ -40,8 +41,10 @@ public class TrajectorySelectionController {
     @FXML
     private void initialize() {
         allRoutes = AppFactory.getTrajectory();
+
         transportTypeBox.setOnTransportTypeChanged(transportType -> filterByTransportType(transportType));
-        filterByTransportType("Bus");//standaard filteren op bus
+        filterByTransportType(TransportType.BUS); // standaard eerst filtereren op bus.
+
         routeBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 refreshTimes();
@@ -53,9 +56,9 @@ public class TrajectorySelectionController {
 
     }
     //zorgt voor de switch in tijden bij keuze bus en trein.
-    private void filterByTransportType(String transportType) {
+    private void filterByTransportType(TransportType transportType) {
         var filteredRoutes = allRoutes.stream()
-                .filter(route -> route.getTransportType().equals(transportType))
+                .filter(route -> route.getTransportType() == transportType)
                 .toList();
 
         routeBox.setItems(FXCollections.observableArrayList(filteredRoutes));
