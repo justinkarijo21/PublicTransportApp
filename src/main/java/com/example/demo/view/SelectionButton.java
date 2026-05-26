@@ -1,5 +1,6 @@
 package com.example.demo.view;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.Node;
@@ -16,8 +17,9 @@ public class SelectionButton extends ToggleButton {
         super(label, icon);
         configure(group);
 
-        this.setContentDisplay(ContentDisplay.TOP); //icoonjte boven de tekst
-        this.setGraphicTextGap(-30);
+        this.setContentDisplay(ContentDisplay.TOP); //icoonjte onder de tekst
+        this.setAlignment(Pos.TOP_CENTER);
+        this.setGraphicTextGap(0.25);
     }
 
     private void configure(ToggleGroup group) {
@@ -26,8 +28,8 @@ public class SelectionButton extends ToggleButton {
         this.setMinWidth(0);
         this.setMinHeight(0);
 
-        this.setPrefHeight(100);
-        this.setPrefWidth(110);
+        this.setPrefHeight(150);
+        this.setPrefWidth(120);
 
         this.getStyleClass().add("Selectie-knop");
     }

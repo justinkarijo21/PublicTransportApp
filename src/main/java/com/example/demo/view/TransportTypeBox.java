@@ -38,7 +38,7 @@ public class TransportTypeBox extends HBox {
         });
 
         this.getChildren().addAll(busButton, trainButton);
-        this.setAlignment(Pos.CENTER_LEFT);
+        this.setAlignment(Pos.TOP_LEFT);
         this.setSpacing(0);
     }
 
@@ -48,8 +48,9 @@ public class TransportTypeBox extends HBox {
         );
 
         ImageView icon = new ImageView(image);
-        icon.setFitWidth(105);
-        icon.setFitHeight(105);
+
+        icon.setFitWidth(65);
+        icon.setFitHeight(65);
         icon.setPreserveRatio(true);
 
         return icon;
