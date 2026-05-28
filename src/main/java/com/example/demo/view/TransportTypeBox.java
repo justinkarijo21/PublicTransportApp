@@ -2,10 +2,10 @@ package com.example.demo.view;
 
 import com.example.demo.model.TransportType;
 import javafx.geometry.Pos;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.HBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.HBox;
 
 import java.util.Objects;
 
@@ -16,14 +16,14 @@ public class TransportTypeBox extends HBox {
         this.transportTypeGroup = new ToggleGroup();
 
         SelectionButton busButton = new SelectionButton(
-                TransportType.BUS.getLabel(),
+                "Bus",
                 transportTypeGroup,
                 createIcon("/icons/bus icon green.png")
         );
         busButton.setUserData(TransportType.BUS);
 
         SelectionButton trainButton = new SelectionButton(
-                TransportType.TREIN.getLabel(),
+                "Trein",
                 transportTypeGroup,
                 createIcon("/icons/train icon yellow.png")
         );
@@ -38,8 +38,9 @@ public class TransportTypeBox extends HBox {
         });
 
         this.getChildren().addAll(busButton, trainButton);
-        this.setAlignment(Pos.TOP_LEFT);
-        this.setSpacing(0);
+        this.setAlignment(Pos.CENTER_LEFT);
+        this.setSpacing(10);
+        this.getStyleClass().add("transport-type-box");
     }
 
     private ImageView createIcon(String path) {
@@ -48,9 +49,8 @@ public class TransportTypeBox extends HBox {
         );
 
         ImageView icon = new ImageView(image);
-
-        icon.setFitWidth(65);
-        icon.setFitHeight(65);
+        icon.setFitWidth(40);
+        icon.setFitHeight(40);
         icon.setPreserveRatio(true);
 
         return icon;

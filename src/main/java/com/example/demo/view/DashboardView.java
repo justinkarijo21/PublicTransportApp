@@ -4,7 +4,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
-import com.example.demo.view.TransportTypeBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -14,26 +13,16 @@ public class DashboardView {
 
     public DashboardView() {
         this.mainLayout = new BorderPane();
-        this.mainLayout.setPadding(new Insets(20));
+        this.mainLayout.setPadding(new Insets(32));
+        this.mainLayout.getStyleClass().add("app-root");
 
-        // Create modules
-        //TransportTypeBox transportSection = new TransportTypeBox();
-
-        // Place modules on the dashboard
-        //mainLayout.setTop(transportSection);
-        mainLayout.setCenter(loadTrajectorySelection());
         VBox centerContent = new VBox();
         centerContent.setSpacing(20);
+        centerContent.getStyleClass().add("planner-shell");
 
-        centerContent.getChildren().addAll(
-                loadTrajectorySelection(),
-                new AssistanceToggle()
-        );
+        centerContent.getChildren().add(loadTrajectorySelection());
 
         mainLayout.setCenter(centerContent);
-
-        // Add spacing between modules
-        //BorderPane.setMargin(transportSection, new Insets(0, 0, 20, 0));
     }
 
     private Parent loadTrajectorySelection() {

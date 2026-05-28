@@ -1,0 +1,130 @@
+RAPPORT - JDK/JVM BUILD-ERROR
+=============================
+
+Datum: 29 mei 2026
+Project: JavaFX Maven-project demo
+
+
+PROBLEEM
+========
+
+IntelliJ gaf de volgende build-error:
+
+"Cannot compile module 'demo' configured for JVM target 25: the specified fallback SDK version 19 does not support the required jvm target 25"
+
+en:
+
+"Please add JDK 8 or later ... should support cross-compilation for JVM target 25"
+
+De oorzaak was een mismatch tussen de JVM target-versie en de beschikbare JDK.
+Het project probeerde te compileren voor JVM target 25, terwijl IntelliJ terugviel
+op een SDK die deze target niet ondersteunt.
+
+
+DOEL
+====
+
+Het project moet Java 21 gebruiken als vaste projectversie.
+Java 25 mag niet meer als compiler target gebruikt worden.
+
+
+UITGEVOERDE CONTROLES
+=====================
+
+De volgende projectbestanden zijn gecontroleerd:
+
+- pom.xml
+- .idea/compiler.xml
+- .idea/misc.xml
+- eventuele .iml-bestanden
+
+Er zijn geen .iml-bestanden gevonden.
+
+
+AANGEPASTE BESTANDEN
+====================
+
+1. pom.xml
+
+De Maven compiler-instellingen zijn op Java 21 gezet:
+
+- maven.compiler.source = 21
+- maven.compiler.target = 21
+- maven.compiler.release = 21
+
+Relevante configuratie:
+
+<maven.compiler.target>21</maven.compiler.target>
+<maven.compiler.source>21</maven.compiler.source>
+<maven.compiler.release>21</maven.compiler.release>
+
+
+2. .idea/compiler.xml
+
+Er is expliciet een IntelliJ bytecode target voor module demo toegevoegd:
+
+<bytecodeTargetLevel>
+  <module name="demo" target="21" />
+</bytecodeTargetLevel>
+
+Hiermee wordt voorkomen dat IntelliJ voor module demo nog een oude of verkeerde
+bytecode target gebruikt.
+
+
+GECONTROLEERDE INSTELLINGEN
+===========================
+
+.idea/misc.xml stond al correct op Java 21:
+
+- languageLevel="JDK_21"
+- project-jdk-name="temurin-21"
+- project-jdk-type="JavaSDK"
+
+Na de wijziging is gecontroleerd dat in de actieve projectconfiguratie geen
+Java/JVM target 25 meer staat.
+
+
+NIET AANGEPAST
+==============
+
+De volgende onderdelen zijn bewust niet aangepast:
+
+- applicatiecode
+- controllerlogica
+- FXML-bestanden
+- package-structuur
+- JavaFX-startklassen
+- routes of modelklassen
+
+De wijziging is beperkt tot de JDK/JVM-target mismatch.
+
+
+COMPILE-CHECK
+=============
+
+De gevraagde Maven compile-check is geprobeerd met:
+
+mvn clean compile
+
+Deze kon niet uitgevoerd worden, omdat Maven niet beschikbaar is op PATH:
+
+mvn : The term 'mvn' is not recognized as the name of a cmdlet, function, script file, or operable program.
+
+Conclusie:
+De configuratie is aangepast naar Java 21, maar de Maven compile-check kon in deze
+omgeving niet uitgevoerd worden zolang mvn niet beschikbaar is.
+
+
+ADVIES
+======
+
+Gebruik in IntelliJ een JDK 21 SDK voor het project.
+Controleer daarna:
+
+1. File > Project Structure > Project SDK = JDK 21
+2. Project language level = 21
+3. Maven project opnieuw importeren/reloaden
+4. Daarna opnieuw builden of uitvoeren
+
+Als Maven via de terminal gebruikt moet worden, voeg Maven toe aan PATH of gebruik
+de Maven-integratie van IntelliJ.
