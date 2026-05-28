@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.TransportType;
 import com.example.demo.model.Trajectory;
 import com.example.demo.app.AppFactory;
-import com.example.demo.model.Trajectory;
 import com.example.demo.view.TransportTypeBox;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -11,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -21,9 +22,11 @@ public class TrajectorySelectionController {
     private ComboBox<Trajectory> routeBox;
 
     @FXML
+    private ScrollPane detailsScrollPane;
+
+    @FXML
     private Button swapButton;
 
-    // knop naast Swap om de eerste gevonden route te kiezen.
     @FXML
     private Button searchButton;
 
@@ -36,21 +39,51 @@ public class TrajectorySelectionController {
     @FXML
     private TransportTypeBox transportTypeBox;
 
+    @FXML
+    private VBox searchPane;
+
+    @FXML
+    private VBox detailsPane;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Label detailsDeparture;
+
+    @FXML
+    private Label detailsArrival;
+
+    @FXML
+    private Label detailsDepartureTime;
+
+    @FXML
+    private Label detailsArrivalTime;
+
+    @FXML
+    private Label detailsDuration;
+
+    @FXML
+    private Label detailsTransportType;
+
     private List<Trajectory> allRoutes;
     private boolean updatingRouteBox;
+    private Trajectory selectedTrajectory;
+    private String selectedDepartureTime;
 
     @FXML
     private void initialize() {
         allRoutes = AppFactory.getTrajectory();
 
         transportTypeBox.setOnTransportTypeChanged(transportType -> filterByTransportType(transportType));
-        filterByTransportType(TransportType.BUS); // standaard eerst filtereren op bus.
+        filterByTransportType(TransportType.BUS);
 
         routeBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 refreshTimes();
             }
         });
+
         routeBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             if (!updatingRouteBox) {
                 filterRoutes(newValue);
@@ -59,8 +92,17 @@ public class TrajectorySelectionController {
 
         infoLabel.setText("");
 
+        timesList.setOnMouseClicked(event -> {
+            if (timesList.getSelectionModel().getSelectedItem() != null) {
+                onTravelSelected();
+            }
+        });
+
+        backButton.setOnAction(event -> onBack());
+
+        showSearchPane();
     }
-    //zorgt voor de switch in tijden bij keuze bus en trein.
+
     private void filterByTransportType(TransportType transportType) {
         updatingRouteBox = true;
         try {
@@ -69,14 +111,13 @@ public class TrajectorySelectionController {
                     .toList();
 
             routeBox.setItems(FXCollections.observableArrayList(filteredRoutes));
-            routeBox.getEditor().clear(); // Clear search box when switching type
+            routeBox.getEditor().clear();
             routeBox.getSelectionModel().selectFirst();
         } finally {
             updatingRouteBox = false;
         }
     }
 
-    // bepaalt welke route gebruikt moet worden voor Swap
     private Trajectory getSelectedRouteForSwap() {
         Trajectory selected = routeBox.getValue();
 
@@ -93,7 +134,6 @@ public class TrajectorySelectionController {
 
     @FXML
     private void onSwap() {
-        // werkt ook als gebruiker alleen heeft getypt maar nog niet op Zoeken heeft gedrukt
         Trajectory selected = getSelectedRouteForSwap();
 
         if (selected == null) {
@@ -101,7 +141,6 @@ public class TrajectorySelectionController {
             return;
         }
 
-        // zoek de omgekeerde route in alle routes, niet alleen in de gefilterde lijst
         Trajectory reverse = allRoutes.stream()
                 .filter(route ->
                         route.getDeparture().equals(selected.getArrival())
@@ -116,11 +155,9 @@ public class TrajectorySelectionController {
             return;
         }
 
-        // voorkom dat de zoek-listener opnieuw onbedoeld gaat filteren
         updatingRouteBox = true;
 
         try {
-
             routeBox.getSelectionModel().select(reverse);
             routeBox.setValue(reverse);
             routeBox.getEditor().setText(reverse.toString());
@@ -133,7 +170,7 @@ public class TrajectorySelectionController {
             updatingRouteBox = false;
         }
     }
-    // kiest de eerste route uit de gefilterde lijst wanneer de gebruiker op Zoeken klikt
+
     @FXML
     private void onSearch() {
         if (routeBox.getItems().isEmpty()) {
@@ -157,7 +194,6 @@ public class TrajectorySelectionController {
         }
     }
 
-    // filtert routes op vertrek, aankomst of volledige routenaam
     private void filterRoutes(String searchText) {
         if (updatingRouteBox) {
             return;
@@ -172,7 +208,6 @@ public class TrajectorySelectionController {
 
             var filteredRoutes = allRoutes.stream()
                     .filter(route -> route.getTransportType() == typeToFilter)
-
                     .filter(route ->
                             route.getDeparture().toLowerCase().contains(search)
                                     || route.getArrival().toLowerCase().contains(search)
@@ -209,10 +244,62 @@ public class TrajectorySelectionController {
                 .map(departure -> {
                     LocalTime departureTime = LocalTime.parse(departure);
                     LocalTime arrivalTime = departureTime.plusMinutes(selected.getTravelMinutes());
-                    return timeFormat.format(departureTime) + " \u2192 " + timeFormat.format(arrivalTime) + "\t(" + selected.getDurationString() + ")";
+                    return timeFormat.format(departureTime) + " → " + timeFormat.format(arrivalTime) + "\t(" + selected.getDurationString() + ")";
                 })
                 .toList();
 
         timesList.setItems(FXCollections.observableArrayList(items));
+    }
+
+    private void onTravelSelected() {
+        int selectedIndex = timesList.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < 0) {
+            return;
+        }
+
+        selectedTrajectory = routeBox.getValue();
+        if (selectedTrajectory == null) {
+            return;
+        }
+
+        selectedDepartureTime = selectedTrajectory.getDepartureTimes().get(selectedIndex);
+        showDetailsPane();
+    }
+
+    private void showDetailsPane() {
+        searchPane.setManaged(false);
+        searchPane.setVisible(false);
+        detailsScrollPane.setManaged(true);
+        detailsScrollPane.setVisible(true);
+
+        updateDetailsDisplay();
+    }
+
+    private void updateDetailsDisplay() {
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime departureTime = LocalTime.parse(selectedDepartureTime);
+        LocalTime arrivalTime = departureTime.plusMinutes(selectedTrajectory.getTravelMinutes());
+
+        detailsDeparture.setText(selectedTrajectory.getDeparture());
+        detailsArrival.setText(selectedTrajectory.getArrival());
+        detailsDepartureTime.setText(timeFormat.format(departureTime));
+        detailsArrivalTime.setText(timeFormat.format(arrivalTime));
+        detailsDuration.setText(selectedTrajectory.getDurationString());
+        detailsTransportType.setText(selectedTrajectory.getTransportType().toString());
+    }
+
+    private void showSearchPane() {
+        searchPane.setManaged(true);
+        searchPane.setVisible(true);
+        detailsScrollPane.setManaged(false);
+        detailsScrollPane.setVisible(false);
+    }
+
+    @FXML
+    private void onBack() {
+        showSearchPane();
+        timesList.getSelectionModel().clearSelection();
+        selectedTrajectory = null;
+        selectedDepartureTime = null;
     }
 }
