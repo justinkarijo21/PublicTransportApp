@@ -5,10 +5,13 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.VBox?>
 <?import com.example.demo.view.TransportTypeBox?>
-
 
 <VBox spacing="12.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.demo.controller.TrajectorySelectionController">
@@ -16,16 +19,71 @@
         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
     </padding>
 
-    <Label text="Choose a route" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-    <TransportTypeBox fx:id="transportTypeBox"/>
-    <HBox spacing="10.0">
-        <ComboBox fx:id="routeBox" promptText="Select a route" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
-        <Button fx:id="searchButton" text="Zoeken" onAction="#onSearch"/>
-        <Button fx:id="swapButton" text="Wissel (↔)" onAction="#onSwap"/>
-    </HBox>
+    <!-- SPACER - PUSH SEARCH BAR DOWN MORE -->
+    <VBox VBox.vgrow="ALWAYS"/>
 
-    <Label text="Times: Start → End" style="-fx-padding: 6 0 0 0;"/>
-    <ListView fx:id="timesList" prefHeight="240.0"/>
+    <!-- ZOEKBALK SECTION - FIXED AT BOTTOM -->
+    <VBox spacing="8.0">
+        <Label text="Kies een route" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <TransportTypeBox fx:id="transportTypeBox"/>
+        <HBox spacing="10.0">
+            <ComboBox fx:id="routeBox" promptText="Selecteer een route" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
+            <Button fx:id="searchButton" text="Zoeken" onAction="#onSearch"/>
+            <Button fx:id="swapButton" text="Wissel (↔)" onAction="#onSwap"/>
+        </HBox>
+        <Label fx:id="infoLabel" text="" style="-fx-text-fill: #666666;"/>
+    </VBox>
 
-    <Label fx:id="infoLabel" text="" style="-fx-text-fill: #666666;"/>
+    <!-- WRAPPER - REISTIJDEN EN DETAILS -->
+    <VBox VBox.vgrow="ALWAYS">
+
+        <!-- REISTIJDEN LISTVIEW - 25% KLEINER -->
+        <VBox fx:id="searchPane" spacing="8.0" managed="true" visible="true" maxHeight="180.0">
+            <Label text="Reistijden: Vertrek → Aankomst" style="-fx-padding: 6 0 0 0;"/>
+            <ListView fx:id="timesList" prefHeight="150.0"/>
+        </VBox>
+
+        <!-- DETAILS PANE WITH SCROLL - SAME POSITION AS LISTVIEW -->
+        <ScrollPane fx:id="detailsScrollPane" managed="false" visible="false" fitToWidth="true"
+                    style="-fx-control-inner-background: white; -fx-padding: 0;" VBox.vgrow="ALWAYS">
+            <VBox fx:id="detailsPane" spacing="12.0" style="-fx-padding: 10;">
+                <Label text="Reisdetails" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+                <GridPane hgap="15.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints maxWidth="120.0"/>
+                        <ColumnConstraints maxWidth="1.7976931348623157E308" hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <!-- Vertrekstation -->
+                    <Label text="Vertrekstation:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <Label fx:id="detailsDeparture" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                    <!-- Aankomststation -->
+                    <Label text="Aankomststation:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <Label fx:id="detailsArrival" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                    <!-- Vertrektijd -->
+                    <Label text="Vertrektijd:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <Label fx:id="detailsDepartureTime" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                    <!-- Aankomsttijd -->
+                    <Label text="Aankomsttijd:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <Label fx:id="detailsArrivalTime" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                    <!-- Reisduur -->
+                    <Label text="Reisduur:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                    <Label fx:id="detailsDuration" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                    <!-- Vervoerstype -->
+                    <Label text="Vervoerstype:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                    <Label fx:id="detailsTransportType" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                </GridPane>
+
+                <HBox spacing="10.0" style="-fx-padding: 10 0 0 0;">
+                    <Button fx:id="backButton" text="Terug" style="-fx-font-size: 11;"/>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </VBox>
 </VBox>
