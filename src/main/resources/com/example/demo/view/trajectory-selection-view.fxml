@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.example.demo.view.AssistanceToggle?>
+<?import com.example.demo.view.TransportTypeBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.VBox?>
-<?import com.example.demo.view.TransportTypeBox?>
 
-<VBox spacing="12.0" xmlns:fx="http://javafx.com/fxml"
+<VBox spacing="16.0" styleClass="planner-card" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.demo.controller.TrajectorySelectionController">
     <padding>
-        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+        <Insets bottom="32.0" left="32.0" right="32.0" top="32.0"/>
     </padding>
 
-    <!-- SPACER - PUSH SEARCH BAR DOWN MORE -->
-    <VBox VBox.vgrow="ALWAYS"/>
+    <Label text="OV-reisplanner" styleClass="app-title"/>
 
-    <!-- ZOEKBALK SECTION - FIXED AT BOTTOM -->
-    <VBox spacing="8.0">
-        <Label text="Kies een route" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    <VBox spacing="14.0">
+        <Label text="Plan je reis" styleClass="planner-title"/>
+
         <TransportTypeBox fx:id="transportTypeBox"/>
+
+        <Label text="Zoeken" styleClass="field-label"/>
+        <TextField fx:id="searchField"
+                   styleClass="search-field"
+                   promptText="Typ vertrek of aankomst, bijvoorbeeld Utrecht"
+                   maxWidth="1.7976931348623157E308"/>
+
+        <Label text="Route" styleClass="field-label"/>
         <HBox spacing="10.0">
-            <ComboBox fx:id="routeBox" promptText="Selecteer een route" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
-            <Button fx:id="searchButton" text="Zoeken" onAction="#onSearch"/>
-            <Button fx:id="swapButton" text="Wissel (↔)" onAction="#onSwap"/>
+            <ComboBox fx:id="routeBox"
+                      styleClass="route-combo"
+                      promptText="Selecteer een route"
+                      maxWidth="1.7976931348623157E308"
+                      HBox.hgrow="ALWAYS"/>
+            <Button fx:id="swapButton" text="Wissel (↔)" styleClass="primary-button" onAction="#onSwap"/>
         </HBox>
-        <Label fx:id="infoLabel" text="" style="-fx-text-fill: #666666;"/>
+
+        <Label fx:id="infoLabel" text="" styleClass="message-label"/>
     </VBox>
 
-    <!-- WRAPPER - REISTIJDEN EN DETAILS -->
     <VBox VBox.vgrow="ALWAYS">
-
-        <!-- REISTIJDEN LISTVIEW - 25% KLEINER -->
-        <VBox fx:id="searchPane" spacing="8.0" managed="true" visible="true" maxHeight="180.0">
-            <Label text="Reistijden: Vertrek → Aankomst" style="-fx-padding: 6 0 0 0;"/>
-            <ListView fx:id="timesList" prefHeight="150.0"/>
+        <VBox fx:id="searchPane" spacing="8.0" managed="true" visible="true" maxHeight="165.0">
+            <Label text="Reistijden" styleClass="field-label"/>
+            <ListView fx:id="timesList" styleClass="times-list" prefHeight="150.0" minHeight="145.0"/>
         </VBox>
 
-        <!-- DETAILS PANE WITH SCROLL - SAME POSITION AS LISTVIEW -->
-        <ScrollPane fx:id="detailsScrollPane" managed="false" visible="false" fitToWidth="true"
-                    style="-fx-control-inner-background: white; -fx-padding: 0;" VBox.vgrow="ALWAYS">
-            <VBox fx:id="detailsPane" spacing="12.0" style="-fx-padding: 10;">
-                <Label text="Reisdetails" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+        <ScrollPane fx:id="detailsScrollPane"
+                    managed="false"
+                    visible="false"
+                    fitToWidth="true"
+                    styleClass="details-scroll"
+                    VBox.vgrow="ALWAYS">
+            <VBox fx:id="detailsPane" spacing="12.0" styleClass="details-pane">
+                <Label text="Reisdetails" styleClass="section-title"/>
 
                 <GridPane hgap="15.0" vgap="10.0">
                     <columnConstraints>
@@ -55,35 +67,34 @@
                         <ColumnConstraints maxWidth="1.7976931348623157E308" hgrow="ALWAYS"/>
                     </columnConstraints>
 
-                    <!-- Vertrekstation -->
-                    <Label text="Vertrekstation:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                    <Label fx:id="detailsDeparture" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <Label text="Vertrekstation:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <Label fx:id="detailsDeparture" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-                    <!-- Aankomststation -->
-                    <Label text="Aankomststation:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                    <Label fx:id="detailsArrival" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <Label text="Aankomststation:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <Label fx:id="detailsArrival" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-                    <!-- Vertrektijd -->
-                    <Label text="Vertrektijd:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                    <Label fx:id="detailsDepartureTime" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    <Label text="Vertrektijd:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <Label fx:id="detailsDepartureTime" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                    <!-- Aankomsttijd -->
-                    <Label text="Aankomsttijd:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                    <Label fx:id="detailsArrivalTime" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                    <Label text="Aankomsttijd:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <Label fx:id="detailsArrivalTime" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-                    <!-- Reisduur -->
-                    <Label text="Reisduur:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                    <Label fx:id="detailsDuration" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                    <Label text="Reisduur:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                    <Label fx:id="detailsDuration" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-                    <!-- Vervoerstype -->
-                    <Label text="Vervoerstype:" style="-fx-font-weight: bold; -fx-font-size: 11;" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-                    <Label fx:id="detailsTransportType" text="-" style="-fx-font-size: 11;" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                    <Label text="Vervoerstype:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                    <Label fx:id="detailsTransportType" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                    <Label text="Beschikbare tijden:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                    <Label fx:id="detailsTimes" text="-" styleClass="detail-value" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
                 </GridPane>
 
-                <HBox spacing="10.0" style="-fx-padding: 10 0 0 0;">
-                    <Button fx:id="backButton" text="Terug" style="-fx-font-size: 11;"/>
+                <HBox spacing="10.0" styleClass="details-actions">
+                    <Button fx:id="backButton" text="Terug"/>
                 </HBox>
             </VBox>
         </ScrollPane>
     </VBox>
+
+    <AssistanceToggle/>
 </VBox>
