@@ -1,0 +1,25 @@
+Index: src/main/java/com/example/demo/view/AssistanceToggle.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.view;\r\n\r\nimport javafx.scene.control.Label;\r\nimport javafx.geometry.Insets;\r\nimport javafx.scene.control.Toggle;\r\nimport javafx.scene.control.ToggleButton;\r\nimport javafx.scene.layout.VBox;\r\n\r\n\r\npublic class AssistanceToggle extends VBox {\r\n\r\n    private final ToggleButton toggle;\r\n    private final Label statusLabel;\r\n\r\n\r\n    public AssistanceToggle() {\r\n\r\n        //Ruimte tussen onderdelen\r\n        setSpacing(10);\r\n        //Padding rondom\r\n        setPadding(new Insets(10));\r\n\r\n        Label title = new Label(\"Wilt u assistentie tijdens uw Reis\");\r\n\r\n        toggle = new ToggleButton(\"NEE\");\r\n        statusLabel = new Label(\"U reist zelfstandig\");\r\n\r\n        //Als gebruiker klikt word het geupdate\r\n\r\n        toggle.selectedProperty().addListener((obs, oldVal, newVal) -> {\r\n            if (newVal) {\r\n                toggle.setText(\"JA\");\r\n                statusLabel.setText(\"U krijgt Assistentie tijdens uw reis\");\r\n\r\n            } else {\r\n                toggle.setText(\"UIT\");\r\n                statusLabel.setText(\"U reist zelfstandig\");\r\n            }\r\n        });\r\n        getChildren().addAll(title, toggle, statusLabel);\r\n    }\r\n    public boolean isAssistanceEnabled() {\r\n        return toggle.isSelected();\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/demo/view/AssistanceToggle.java b/src/main/java/com/example/demo/view/AssistanceToggle.java
+--- a/src/main/java/com/example/demo/view/AssistanceToggle.java	(revision 236522a103231f3204e4cd4528c5e65cf77736d9)
++++ b/src/main/java/com/example/demo/view/AssistanceToggle.java	(date 1779960819262)
+@@ -30,11 +30,11 @@
+         toggle.selectedProperty().addListener((obs, oldVal, newVal) -> {
+             if (newVal) {
+                 toggle.setText("JA");
+-                statusLabel.setText("U krijgt Assistentie tijdens uw reis");
++                statusLabel.setText("U krijgt Assistentie tijdens uw reis?");
+ 
+             } else {
+-                toggle.setText("UIT");
+-                statusLabel.setText("U reist zelfstandig");
++                toggle.setText("NEE");
++                statusLabel.setText("U reist zelfstandig.");
+             }
+         });
+         getChildren().addAll(title, toggle, statusLabel);
