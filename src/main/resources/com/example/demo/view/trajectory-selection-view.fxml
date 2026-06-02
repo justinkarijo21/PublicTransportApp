@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox spacing="16.0" styleClass="planner-card" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.demo.controller.TrajectorySelectionController">
+    fx:controller="com.example.demo.controller.TrajectorySelectionController">
     <padding>
         <Insets bottom="32.0" left="32.0" right="32.0" top="32.0"/>
     </padding>
@@ -29,17 +29,17 @@
 
         <Label text="Zoeken" styleClass="field-label"/>
         <TextField fx:id="searchField"
-                   styleClass="search-field"
-                   promptText="Typ vertrek of aankomst, bijvoorbeeld Utrecht"
-                   maxWidth="1.7976931348623157E308"/>
+                styleClass="search-field"
+                promptText="Typ vertrek of aankomst, bijvoorbeeld Utrecht"
+                maxWidth="1.7976931348623157E308"/>
 
         <Label text="Route" styleClass="field-label"/>
         <HBox spacing="10.0">
             <ComboBox fx:id="routeBox"
-                      styleClass="route-combo"
-                      promptText="Selecteer een route"
-                      maxWidth="1.7976931348623157E308"
-                      HBox.hgrow="ALWAYS"/>
+                    styleClass="route-combo"
+                    promptText="Selecteer een route"
+                    maxWidth="1.7976931348623157E308"
+                    HBox.hgrow="ALWAYS"/>
             <Button fx:id="swapButton" text="Wissel (↔)" styleClass="primary-button" onAction="#onSwap"/>
         </HBox>
 
