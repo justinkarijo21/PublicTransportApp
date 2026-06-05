@@ -16,6 +16,7 @@ public class MainApplication extends Application {
         Scene scene = new Scene(startScreen.getRoot(), 1024, 760);
         scene.getStylesheets().add(Objects.requireNonNull(
                 MainApplication.class.getResource("/com/example/demo/view/app.css")
+
         ).toExternalForm());
         stage.setTitle("Reis Planner");
         stage.setScene(scene);
