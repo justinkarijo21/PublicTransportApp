@@ -32,7 +32,7 @@ public class DashboardView {
         HBox bovenbalk = new HBox();
         bovenbalk.setPadding(new Insets(10));
         bovenbalk.setStyle("-fx-background-color: #21f3955a;");
-        bovenbalk.setAlignment(Pos.CENTER_RIGHT); // <-- streepjes rechts
+        bovenbalk.setAlignment(Pos.CENTER_LEFT); // <-- streepjes links, rest van de ruimte rechts
         bovenbalk.getChildren().add(hamburger);
 
         // ---------------------------
@@ -42,9 +42,9 @@ public class DashboardView {
 
         hamburger.setOnMouseClicked(e -> {
             if (menuOpen) {
-                mainLayout.setRight(null);
+                mainLayout.setLeft(null);
             } else {
-                mainLayout.setRight(zijMenu);
+                mainLayout.setLeft(zijMenu);
             }
             menuOpen = !menuOpen;
         });
