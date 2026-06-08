@@ -11,7 +11,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalTime;
@@ -20,10 +19,10 @@ import java.util.List;
 
 public class TrajectorySelectionController {
     @FXML
-    private ComboBox<Trajectory> routeBox;
+    private ComboBox<String> startStationBox;
 
     @FXML
-    private TextField searchField;
+    private ComboBox<String> endStationBox;
 
     @FXML
     private ScrollPane detailsScrollPane;
@@ -71,22 +70,41 @@ public class TrajectorySelectionController {
     private Label detailsTimes;
 
     private List<Trajectory> allRoutes;
+    private List<String> allStartStations = List.of();
+    private List<String> currentEndStations = List.of();
     private Trajectory selectedTrajectory;
     private String selectedDepartureTime;
+    private boolean updatingComboBoxItems;
 
     @FXML
     private void initialize() {
         allRoutes = AppFactory.getTrajectory();
 
-        transportTypeBox.setOnTransportTypeChanged(transportType -> applyFilters());
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> applyFilters());
-        applyFilters();
+        startStationBox.setEditable(true);
+        endStationBox.setEditable(true);
 
-        routeBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                refreshTimes();
-            }
+        transportTypeBox.setOnTransportTypeChanged(transportType -> fillStationBoxes());
+        startStationBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+            updateEndStationsForSelectedStart();
+            refreshTimes();
         });
+        startStationBox.getEditor().textProperty().addListener((obs, oldText, newText) -> {
+            if (updatingComboBoxItems) {
+                return;
+            }
+            filterComboBoxItems(startStationBox, allStartStations, newText);
+            updateEndStationsForSelectedStart();
+            refreshTimes();
+        });
+        endStationBox.valueProperty().addListener((obs, oldValue, newValue) -> refreshTimes());
+        endStationBox.getEditor().textProperty().addListener((obs, oldText, newText) -> {
+            if (updatingComboBoxItems) {
+                return;
+            }
+            filterComboBoxItems(endStationBox, currentEndStations, newText);
+            refreshTimes();
+        });
+        fillStationBoxes();
 
         infoLabel.setText("");
 
@@ -101,85 +119,160 @@ public class TrajectorySelectionController {
         showSearchPane();
     }
 
-    private void applyFilters() {
-        String searchText = searchField.getText() == null ? "" : searchField.getText().toLowerCase().trim();
-        TransportType selectedType = transportTypeBox.getSelectedType();
-        TransportType typeToFilter = (selectedType != null) ? selectedType : TransportType.BUS;
-
-        var filteredRoutes = allRoutes.stream()
-                .filter(route -> route.getTransportType() == typeToFilter)
-                .filter(route ->
-                        route.getDeparture().toLowerCase().contains(searchText)
-                                || route.getArrival().toLowerCase().contains(searchText)
-                                || route.toString().toLowerCase().contains(searchText)
-                )
-                .toList();
-
-        routeBox.setItems(FXCollections.observableArrayList(filteredRoutes));
-
-        if (filteredRoutes.isEmpty()) {
-            routeBox.setValue(null);
-            timesList.setItems(FXCollections.observableArrayList());
-            infoLabel.setText("Geen route gevonden.");
-            return;
-        }
-
-        routeBox.getSelectionModel().selectFirst();
-        infoLabel.setText("");
+    private void fillStationBoxes() {
+        fillStartStations();
+        updateEndStationsForSelectedStart();
         refreshTimes();
     }
 
-    private Trajectory getSelectedRouteForSwap() {
-        Trajectory selected = routeBox.getValue();
+    private void fillStartStations() {
+        allStartStations = getStartStationsForSelectedType();
 
-        if (selected != null) {
-            return selected;
+        startStationBox.setItems(FXCollections.observableArrayList(allStartStations));
+
+        if (allStartStations.isEmpty()) {
+            startStationBox.setValue(null);
+            startStationBox.getEditor().clear();
+            return;
         }
 
-        if (!routeBox.getItems().isEmpty()) {
-            return routeBox.getItems().get(0);
+        startStationBox.getSelectionModel().selectFirst();
+    }
+
+    private void updateEndStationsForSelectedStart() {
+        String start = getComboBoxText(startStationBox);
+
+        if (start.isEmpty()) {
+            currentEndStations = List.of();
+            endStationBox.setItems(FXCollections.observableArrayList());
+            endStationBox.setValue(null);
+            endStationBox.getEditor().clear();
+            return;
         }
 
-        return null;
+        String oldEnd = getComboBoxText(endStationBox);
+        currentEndStations = getEndStationsForStart(start);
+
+        endStationBox.setItems(FXCollections.observableArrayList(currentEndStations));
+
+        if (currentEndStations.isEmpty()) {
+            endStationBox.setValue(null);
+            endStationBox.getEditor().clear();
+            return;
+        }
+
+        if (currentEndStations.contains(oldEnd)) {
+            endStationBox.setValue(oldEnd);
+            endStationBox.getEditor().setText(oldEnd);
+        } else {
+            endStationBox.getSelectionModel().selectFirst();
+        }
+    }
+
+    private List<String> getStartStationsForSelectedType() {
+        TransportType selectedType = transportTypeBox.getSelectedType();
+        TransportType typeToFilter = (selectedType != null) ? selectedType : TransportType.BUS;
+
+        return allRoutes.stream()
+                .filter(route -> route.getTransportType() == typeToFilter)
+                .map(Trajectory::getDeparture)
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    private List<String> getEndStationsForStart(String start) {
+        TransportType selectedType = transportTypeBox.getSelectedType();
+        TransportType typeToFilter = (selectedType != null) ? selectedType : TransportType.BUS;
+
+        return allRoutes.stream()
+                .filter(route -> route.getTransportType() == typeToFilter)
+                .filter(route -> route.getDeparture().equals(start))
+                .map(Trajectory::getArrival)
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    private void filterComboBoxItems(ComboBox<String> comboBox, List<String> sourceItems, String typedText) {
+        String search = typedText == null ? "" : typedText.toLowerCase().trim();
+
+        var filteredItems = sourceItems.stream()
+                .filter(item -> item.toLowerCase().contains(search))
+                .toList();
+
+        updatingComboBoxItems = true;
+        try {
+            comboBox.setItems(FXCollections.observableArrayList(filteredItems));
+            comboBox.getEditor().setText(typedText);
+            comboBox.getEditor().positionCaret(typedText == null ? 0 : typedText.length());
+        } finally {
+            updatingComboBoxItems = false;
+        }
+
+        if (comboBox.isFocused()
+                && typedText != null
+                && !typedText.isBlank()
+                && !filteredItems.isEmpty()) {
+            comboBox.show();
+        } else {
+            comboBox.hide();
+        }
+    }
+
+    private String getComboBoxText(ComboBox<String> comboBox) {
+        String text = comboBox.getEditor().getText();
+        return text == null ? "" : text.trim();
+    }
+
+    private Trajectory findSelectedTrajectory() {
+        String start = getComboBoxText(startStationBox);
+        String end = getComboBoxText(endStationBox);
+
+        if (start.isEmpty() || end.isEmpty() || start.equals(end)) {
+            return null;
+        }
+
+        TransportType selectedType = transportTypeBox.getSelectedType();
+        TransportType typeToFilter = (selectedType != null) ? selectedType : TransportType.BUS;
+
+        return allRoutes.stream()
+                .filter(route -> route.getTransportType() == typeToFilter)
+                .filter(route -> route.getDeparture().equals(start))
+                .filter(route -> route.getArrival().equals(end))
+                .findFirst()
+                .orElse(null);
     }
 
     @FXML
     private void onSwap() {
-        Trajectory selected = getSelectedRouteForSwap();
+        String start = getComboBoxText(startStationBox);
+        String end = getComboBoxText(endStationBox);
 
-        if (selected == null) {
-            infoLabel.setText("Kies eerst een route.");
+        if (start.isEmpty() || end.isEmpty()) {
+            infoLabel.setText("Kies eerst een begin- en eindstation.");
             return;
         }
 
-        Trajectory reverse = allRoutes.stream()
-                .filter(route ->
-                        route.getDeparture().equals(selected.getArrival())
-                                && route.getArrival().equals(selected.getDeparture())
-                                && route.getTransportType().equals(selected.getTransportType())
-                )
-                .findFirst()
-                .orElse(null);
-
-        if (reverse == null) {
-            infoLabel.setText("Geen omgekeerde route gevonden.");
-            return;
-        }
-
-        routeBox.getSelectionModel().select(reverse);
-        routeBox.setValue(reverse);
-        routeBox.hide();
-
-        infoLabel.setText("");
+        startStationBox.getEditor().setText(end);
+        endStationBox.getEditor().setText(start);
+        updateEndStationsForSelectedStart();
         refreshTimes();
     }
 
     private void refreshTimes() {
-        Trajectory selected = routeBox.getValue();
+        Trajectory selected = findSelectedTrajectory();
         if (selected == null) {
             timesList.setItems(FXCollections.observableArrayList());
+            if (getComboBoxText(startStationBox).isEmpty() || getComboBoxText(endStationBox).isEmpty()) {
+                infoLabel.setText("Kies een begin- en eindstation.");
+            } else {
+                infoLabel.setText("Geen route gevonden.");
+            }
             return;
         }
+
+        infoLabel.setText("");
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
         var items = selected.getDepartureTimes().stream()
                 .map(departure -> {
@@ -200,7 +293,7 @@ public class TrajectorySelectionController {
             return;
         }
 
-        selectedTrajectory = routeBox.getValue();
+        selectedTrajectory = findSelectedTrajectory();
         if (selectedTrajectory == null) {
             return;
         }
