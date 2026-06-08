@@ -1,0 +1,16 @@
+Index: src/main/java/com/example/demo/view/AssistanceToggle.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.view;\n\nimport javafx.scene.control.Label;\nimport javafx.geometry.Insets;\nimport javafx.scene.control.Toggle;\nimport javafx.scene.control.ToggleButton;\nimport javafx.scene.layout.VBox;\n\n\npublic class AssistanceToggle extends VBox {\n\n    private final ToggleButton toggle;\n    private final Label statusLabel;\n\n\n    public AssistanceToggle() {\n\n        //Ruimte tussen onderdelen\n        setSpacing(10);\n        //Padding rondom\n        setPadding(new Insets(10));\n\n        Label title = new Label(\"Wilt u assistentie tijdens uw Reis\");\n\n        toggle = new ToggleButton(\"NEE\");\n        statusLabel = new Label(\"U reist zelfstandig\");\n\n        //Als gebruiker klikt word het geupdate\n\n        toggle.selectedProperty().addListener((obs, oldVal, newVal) -> {\n            if (newVal) {\n                toggle.setText(\"JA\");\n                statusLabel.setText(\"U krijgt Assistentie tijdens uw reis\");\n\n            } else {\n                toggle.setText(\"UIT\");\n                statusLabel.setText(\"U reist zelfstandig\");\n            }\n        });\n        getChildren().addAll(title, toggle, statusLabel);\n    }\n    public boolean isAssistanceEnabled() {\n        return toggle.isSelected();\n    }\n}\n\n\n\n\n\n
+===================================================================
+diff --git a/src/main/java/com/example/demo/view/AssistanceToggle.java b/src/main/java/com/example/demo/view/AssistanceToggle.java
+--- a/src/main/java/com/example/demo/view/AssistanceToggle.java	(revision 0b6254091dbbb3f39f938ed0dd5c9586ec92bcb5)
++++ b/src/main/java/com/example/demo/view/AssistanceToggle.java	(date 1779835585645)
+@@ -5,6 +5,7 @@
+ import javafx.scene.control.Toggle;
+ import javafx.scene.control.ToggleButton;
+ import javafx.scene.layout.VBox;
++import com.example.demo.view.DashboardView;
+ 
+ 
+ public class AssistanceToggle extends VBox {
