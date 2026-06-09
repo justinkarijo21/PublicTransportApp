@@ -8,7 +8,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -26,21 +25,19 @@
         <Label text="Plan je reis" styleClass="planner-title"/>
 
         <TransportTypeBox fx:id="transportTypeBox"/>
-
-        <Label text="Zoeken" styleClass="field-label"/>
-        <TextField fx:id="searchField"
-                styleClass="search-field"
-                promptText="Typ vertrek of aankomst, bijvoorbeeld Utrecht"
-                maxWidth="1.7976931348623157E308"/>
-
         <Label text="Route" styleClass="field-label"/>
         <HBox spacing="10.0">
-            <ComboBox fx:id="routeBox"
+            <ComboBox fx:id="startStationBox"
                     styleClass="route-combo"
-                    promptText="Selecteer een route"
+                    promptText="Beginstation"
                     maxWidth="1.7976931348623157E308"
                     HBox.hgrow="ALWAYS"/>
-            <Button fx:id="swapButton" text="Wissel (↔)" styleClass="primary-button" onAction="#onSwap"/>
+            <Button fx:id="swapButton" text="Wissel" styleClass="primary-button" onAction="#onSwap"/>
+            <ComboBox fx:id="endStationBox"
+                    styleClass="route-combo"
+                    promptText="Eindstation"
+                    maxWidth="1.7976931348623157E308"
+                    HBox.hgrow="ALWAYS"/>
         </HBox>
 
         <Label fx:id="infoLabel" text="" styleClass="message-label"/>
