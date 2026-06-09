@@ -1,139 +1,167 @@
 BRONCODE EN UITLEG - Transit Planner
 ====================================
 
-Laatst herzien: 31 mei 2026
+Laatst herzien: 9 juni 2026
 
-Dit project is een Java/Maven/JavaFX-applicatie voor een eenvoudige OV-reisplanner.
-De huidige applicatie gebruikt vaste voorbeeldroutes, een keuze tussen bus en trein,
-een zoekveld, een routekeuze, een lijst met reistijden, een detailscherm en een
-assistentiekeuze.
+Dit document bevat uitleg EN werkelijke broncode uit het project. De broncodefragmenten hieronder zijn overgenomen uit de huidige bestanden in src, resources en pom.xml.
 
+KORTE SAMENVATTING
+==================
 
-BELANGRIJKSTE HUIDIGE KENMERKEN
-===============================
+- Startpunt: com.example.demo.app.Launcher.
+- Hoofdapplicatie: com.example.demo.app.MainApplication.
+- Hoofdscherm: com.example.demo.view.DashboardView.
+- Belangrijkste controller: com.example.demo.controller.TrajectorySelectionController.
+- Belangrijkste FXML: src/main/resources/com/example/demo/view/trajectory-selection-view.fxml.
+- Styling: src/main/resources/com/example/demo/view/app.css.
+- Data: vaste routes in com.example.demo.model.FixedRoutes.
+- Model: com.example.demo.model.Trajectory.
+- Vervoerstypen: BUS en TREIN via com.example.demo.model.TransportType.
 
-- De applicatie start via com.example.demo.app.Launcher.
-- MainApplication opent een JavaFX-venster van 1024 x 760 pixels.
-- app.css wordt geladen vanuit src/main/resources/com/example/demo/view/app.css.
-- DashboardView bouwt het hoofdscherm en laadt trajectory-selection-view.fxml.
-- TrajectorySelectionController bestuurt zoeken, filteren, wisselen en details tonen.
-- FixedRoutes bevat vaste routes voor Bus en Trein.
-- Trajectory bevat vertrek, aankomst, vertrektijden, reistijd en vervoerstype.
-- TransportType is een enum met BUS en TREIN.
-- TransportTypeBox toont Bus en Trein als toggle-knoppen met iconen.
-- AssistanceToggle vraagt of de gebruiker assistentie tijdens de reis wil.
-- De oude HelloApplication en hello-view.fxml staan nog in het project, maar horen
-  niet bij de normale startflow.
+HUIDIGE UI-FLOW
+===============
 
+1. De gebruiker kiest Bus of Trein. Bus is standaard geselecteerd.
+2. De oude zoekbalk en oude route-ComboBox zijn verwijderd.
+3. De gebruiker gebruikt nu twee typbare ComboBoxen: Beginstation en Eindstation.
+4. startStationBox toont vertrekstations voor het gekozen vervoerstype.
+5. Tijdens typen in startStationBox blijven alleen vertrekstations zichtbaar die matchen met de getypte tekst.
+6. endStationBox toont alleen eindstations waarvoor een route bestaat vanaf het gekozen/getypte beginstation.
+7. Tijdens typen in endStationBox wordt alleen gefilterd binnen die gekoppelde eindstations.
+8. De knop Wissel staat tussen beginstation en eindstation en wisselt de ingevoerde teksten om.
+9. Reistijden worden automatisch ververst wanneer beginstation, eindstation of vervoerstype verandert.
+10. Bij een geldige route toont de lijst vertrek, aankomst en duur.
+11. Bij ontbrekende invoer toont de app: Kies een begin- en eindstation.
+12. Bij een ingevulde maar ongeldige combinatie toont de app: Geen route gevonden.
+13. Een klik op een reistijd opent het bestaande detailscherm.
+14. De Terug-knop toont de reistijdenweergave opnieuw.
+15. Onderaan staat nog steeds de assistentiekeuze Ja/Nee.
 
-PROJECTSTRUCTUUR
-================
+STARTFLOW
+=========
 
-Belangrijkste bestanden:
+1. Launcher.main(String[] args) wordt uitgevoerd.
+2. Launcher start JavaFX met MainApplication.
+3. MainApplication maakt DashboardView.
+4. DashboardView bouwt de BorderPane, bovenbalk, hamburgerknop, zijmenu en plannerinhoud.
+5. DashboardView laadt trajectory-selection-view.fxml.
+6. trajectory-selection-view.fxml gebruikt TrajectorySelectionController.
+7. MainApplication laadt app.css en toont het venster Reis Planner.
 
-- pom.xml
-  Maven-configuratie met JavaFX- en JUnit-dependencies.
+BELANGRIJKE CONTROLLERLOGICA
+============================
 
-- README.md
-  Korte projectbeschrijving met startinstructies.
-
-- src/main/java/com/example/demo/app/Launcher.java
-  Startpunt met de main-methode.
-
-- src/main/java/com/example/demo/app/MainApplication.java
-  JavaFX Application-klasse die het hoofdvenster opent en CSS laadt.
-
-- src/main/java/com/example/demo/app/AppFactory.java
-  Tussenlaag die trajectdata uit FixedRoutes beschikbaar maakt.
-
-- src/main/java/com/example/demo/controller/TrajectorySelectionController.java
-  Controller voor zoeken, routefiltering, wisselen, reistijden en reisdetails.
-
-- src/main/java/com/example/demo/model/FixedRoutes.java
-  Vaste voorbeeldroutes voor bus en trein.
-
-- src/main/java/com/example/demo/model/Trajectory.java
-  Modelklasse voor een route.
-
-- src/main/java/com/example/demo/model/TransportType.java
-  Enum voor BUS en TREIN.
-
-- src/main/java/com/example/demo/view/AssistanceToggle.java
-  UI-component voor assistentie ja/nee.
-
-- src/main/java/com/example/demo/view/DashboardView.java
-  Bouwt de hoofdcontainer en laadt de FXML.
-
-- src/main/java/com/example/demo/view/SelectionButton.java
-  Herbruikbare toggle-knop voor de vervoerstypekeuze.
-
-- src/main/java/com/example/demo/view/TransportTypeBox.java
-  UI-component met Bus- en Trein-knoppen.
-
-- src/main/resources/com/example/demo/view/trajectory-selection-view.fxml
-  Hoofd-FXML voor de reisplanner.
-
-- src/main/resources/com/example/demo/view/app.css
-  Styling voor de applicatie.
-
-
-HOE START DE APPLICATIE?
-========================
-
-De normale startflow is:
-
-1. Launcher.main() wordt uitgevoerd.
-2. Launcher start JavaFX met MainApplication:
-
-   Application.launch(MainApplication.class, args);
-
-3. JavaFX roept MainApplication.start(Stage stage) aan.
-4. MainApplication maakt een DashboardView.
-5. MainApplication maakt een Scene van 1024 x 760 pixels.
-6. MainApplication laadt app.css.
-7. DashboardView maakt een BorderPane en plaatst daarin de FXML-weergave.
-8. trajectory-selection-view.fxml gebruikt TrajectorySelectionController.
-9. Het venster krijgt de titel "Reis Planner".
-
-
-WAT DOET DE APPLICATIE?
-=======================
-
-1. De gebruiker ziet de titel "OV-reisplanner".
-2. De gebruiker kiest Bus of Trein. Bus is standaard geselecteerd.
-3. Het zoekveld filtert routes op vertrek, aankomst of volledige routenaam.
-4. De ComboBox toont alleen routes van het gekozen vervoerstype.
-5. De knop "Wissel" zoekt de omgekeerde route met hetzelfde vervoerstype.
-6. De lijst "Reistijden" toont vertrek, aankomst en duur.
-7. Als de gebruiker een reistijd aanklikt, wordt een detailscherm geopend.
-8. Het detailscherm toont vertrekstation, aankomststation, vertrektijd,
-   aankomsttijd, reisduur, vervoerstype en alle beschikbare tijden.
-9. De knop "Terug" brengt de gebruiker terug naar de zoekweergave.
-10. Onderaan kan de gebruiker aangeven of assistentie nodig is.
-
+- allStartStations bewaart alle vertrekstations voor het gekozen vervoerstype.
+- currentEndStations bewaart de eindstations die passen bij het huidige beginstation.
+- fillStationBoxes() vult de startstations, werkt de eindstations bij en ververst de reistijden.
+- fillStartStations() vult startStationBox op basis van het gekozen vervoerstype.
+- updateEndStationsForSelectedStart() beperkt endStationBox tot routes vanaf het gekozen/getypte beginstation.
+- filterComboBoxItems(...) filtert de zichtbare ComboBox-opties tijdens typen.
+- getComboBoxText(...) leest de tekst uit de editor van een typbare ComboBox.
+- findSelectedTrajectory() zoekt de route op basis van getypte start/eindtekst en vervoerstype.
+- refreshTimes() vult de reistijdenlijst of toont een melding.
+- onSwap() wisselt de editor-tekst van begin- en eindstation en ververst daarna de eindstations en reistijden.
 
 BESTAND: pom.xml
 ================
 
-Uitleg:
-Dit is het Maven-configuratiebestand. Het project gebruikt JavaFX controls,
-JavaFX FXML en JUnit. De compiler staat op Java 21.
-
-Belangrijke huidige instellingen:
-- Java compiler source/target/release: 21
-- JavaFX-versie: 21.0.6
-- JUnit-versie: 5.12.1
-- JavaFX Maven mainClass: com.example.demo/com.example.demo.app.Launcher
-
-
-BESTAND: src/main/java/com/example/demo/app/Launcher.java
-=========================================================
+Pad:
+  pom.xml
 
 Uitleg:
-Launcher bevat de main-methode en start JavaFX met MainApplication.
+  Maven-configuratie. Bevat JavaFX controls, JavaFX FXML, JUnit en de JavaFX Maven plugin. De mainClass verwijst naar com.example.demo.app.Launcher.
 
 Broncode:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.example</groupId>
+    <artifactId>demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>demo</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.12.1</junit.version>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.release>21</maven.compiler.release>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>21.0.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <executions>
+                    <execution>
+                        <!-- Default configuration for running with: mvn clean javafx:run -->
+                        <id>default-cli</id>
+                        <configuration>
+                            <mainClass>com.example.demo/com.example.demo.app.Launcher</mainClass>
+                            <launcher>app</launcher>
+                            <jlinkZipName>app</jlinkZipName>
+                            <jlinkImageName>app</jlinkImageName>
+                            <noManPages>true</noManPages>
+                            <stripDebug>true</stripDebug>
+                            <noHeaderFiles>true</noHeaderFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+```
+
+BESTAND: Launcher.java
+======================
+
+Pad:
+  src/main/java/com/example/demo/app/Launcher.java
+
+Uitleg:
+  Startpunt met de main-methode. Deze klasse start JavaFX met MainApplication.
+
+Broncode:
+```
 package com.example.demo.app;
 
 import javafx.application.Application;
@@ -143,17 +171,19 @@ public class Launcher {
         Application.launch(MainApplication.class, args);
     }
 }
+```
 
+BESTAND: MainApplication.java
+=============================
 
-BESTAND: src/main/java/com/example/demo/app/MainApplication.java
-===============================================================
+Pad:
+  src/main/java/com/example/demo/app/MainApplication.java
 
 Uitleg:
-MainApplication is de hoofdklasse van de JavaFX-applicatie. Deze klasse maakt
-DashboardView, zet die in een Scene, laadt app.css en opent het venster.
+  JavaFX Application-klasse. Maakt de DashboardView, plaatst deze in een Scene, laadt app.css en toont het hoofdvenster.
 
 Broncode:
-
+```
 package com.example.demo.app;
 
 import javafx.application.Application;
@@ -172,6 +202,7 @@ public class MainApplication extends Application {
         Scene scene = new Scene(startScreen.getRoot(), 1024, 760);
         scene.getStylesheets().add(Objects.requireNonNull(
                 MainApplication.class.getResource("/com/example/demo/view/app.css")
+
         ).toExternalForm());
         stage.setTitle("Reis Planner");
         stage.setScene(scene);
@@ -179,16 +210,19 @@ public class MainApplication extends Application {
     }
 }
 
+```
 
-BESTAND: src/main/java/com/example/demo/app/AppFactory.java
-==========================================================
+BESTAND: AppFactory.java
+========================
+
+Pad:
+  src/main/java/com/example/demo/app/AppFactory.java
 
 Uitleg:
-AppFactory is een eenvoudige tussenlaag. De controller vraagt trajecten op via
-AppFactory.getTrajectory(), waarna AppFactory de data uit FixedRoutes haalt.
+  Tussenlaag tussen controller en vaste data. Geeft de lijst uit FixedRoutes terug.
 
 Broncode:
-
+```
 package com.example.demo.app;
 import java.util.List;
 
@@ -205,63 +239,431 @@ public class AppFactory {
     }
 
 
-BESTAND: src/main/java/com/example/demo/model/TransportType.java
-===============================================================
+
+```
+
+BESTAND: TrajectorySelectionController.java
+===========================================
+
+Pad:
+  src/main/java/com/example/demo/controller/TrajectorySelectionController.java
 
 Uitleg:
-TransportType is een enum voor de beschikbare vervoerstypen. De labels worden
-getoond in de UI.
+  Hoofdcontroller van de planner. Bevat de typbare begin/eindstation-ComboBoxen, filtering tijdens typen, gekoppelde eindstations, switchlogica, reistijden en detailscherm.
 
 Broncode:
+```
+package com.example.demo.controller;
 
+import com.example.demo.model.TransportType;
+import com.example.demo.model.Trajectory;
+import com.example.demo.app.AppFactory;
+import com.example.demo.view.TransportTypeBox;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+public class TrajectorySelectionController {
+    @FXML
+    private ComboBox<String> startStationBox;
+
+    @FXML
+    private ComboBox<String> endStationBox;
+
+    @FXML
+    private ScrollPane detailsScrollPane;
+
+    @FXML
+    private Button swapButton;
+
+    @FXML
+    private Label infoLabel;
+
+    @FXML
+    private ListView<String> timesList;
+
+    @FXML
+    private TransportTypeBox transportTypeBox;
+
+    @FXML
+    private VBox searchPane;
+
+    @FXML
+    private VBox detailsPane;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Label detailsDeparture;
+
+    @FXML
+    private Label detailsArrival;
+
+    @FXML
+    private Label detailsDepartureTime;
+
+    @FXML
+    private Label detailsArrivalTime;
+
+    @FXML
+    private Label detailsDuration;
+
+    @FXML
+    private Label detailsTransportType;
+
+    @FXML
+    private Label detailsTimes;
+
+    private List<Trajectory> allRoutes;
+    private List<String> allStartStations = List.of();
+    private List<String> currentEndStations = List.of();
+    private Trajectory selectedTrajectory;
+    private String selectedDepartureTime;
+    private boolean updatingComboBoxItems;
+
+    @FXML
+    private void initialize() {
+        allRoutes = AppFactory.getTrajectory();
+
+        startStationBox.setEditable(true);
+        endStationBox.setEditable(true);
+
+        transportTypeBox.setOnTransportTypeChanged(transportType -> fillStationBoxes());
+        startStationBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+            updateEndStationsForSelectedStart();
+            refreshTimes();
+        });
+        startStationBox.getEditor().textProperty().addListener((obs, oldText, newText) -> {
+            if (updatingComboBoxItems) {
+                return;
+            }
+            filterComboBoxItems(startStationBox, allStartStations, newText);
+            updateEndStationsForSelectedStart();
+            refreshTimes();
+        });
+        endStationBox.valueProperty().addListener((obs, oldValue, newValue) -> refreshTimes());
+        endStationBox.getEditor().textProperty().addListener((obs, oldText, newText) -> {
+            if (updatingComboBoxItems) {
+                return;
+            }
+            filterComboBoxItems(endStationBox, currentEndStations, newText);
+            refreshTimes();
+        });
+        fillStationBoxes();
+
+        infoLabel.setText("");
+
+        timesList.setOnMouseClicked(event -> {
+            if (timesList.getSelectionModel().getSelectedItem() != null) {
+                onTravelSelected();
+            }
+        });
+
+        backButton.setOnAction(event -> onBack());
+
+        showSearchPane();
+    }
+
+    private void fillStationBoxes() {
+        fillStartStations();
+        updateEndStationsForSelectedStart();
+        refreshTimes();
+    }
+
+    private void fillStartStations() {
+        allStartStations = getStartStationsForSelectedType();
+
+        startStationBox.setItems(FXCollections.observableArrayList(allStartStations));
+
+        if (allStartStations.isEmpty()) {
+            startStationBox.setValue(null);
+            startStationBox.getEditor().clear();
+            return;
+        }
+
+        startStationBox.getSelectionModel().selectFirst();
+    }
+
+    private void updateEndStationsForSelectedStart() {
+        String start = getComboBoxText(startStationBox);
+
+        if (start.isEmpty()) {
+            currentEndStations = List.of();
+            endStationBox.setItems(FXCollections.observableArrayList());
+            endStationBox.setValue(null);
+            endStationBox.getEditor().clear();
+            return;
+        }
+
+        String oldEnd = getComboBoxText(endStationBox);
+        currentEndStations = getEndStationsForStart(start);
+
+        endStationBox.setItems(FXCollections.observableArrayList(currentEndStations));
+
+        if (currentEndStations.isEmpty()) {
+            endStationBox.setValue(null);
+            endStationBox.getEditor().clear();
+            return;
+        }
+
+        if (currentEndStations.contains(oldEnd)) {
+            endStationBox.setValue(oldEnd);
+            endStationBox.getEditor().setText(oldEnd);
+        } else {
+            endStationBox.getSelectionModel().selectFirst();
+        }
+    }
+
+    private List<String> getStartStationsForSelectedType() {
+        TransportType selectedType = transportTypeBox.getSelectedType();
+        TransportType typeToFilter = (selectedType != null) ? selectedType : TransportType.BUS;
+
+        return allRoutes.stream()
+                .filter(route -> route.getTransportType() == typeToFilter)
+                .map(Trajectory::getDeparture)
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    private List<String> getEndStationsForStart(String start) {
+        TransportType selectedType = transportTypeBox.getSelectedType();
+        TransportType typeToFilter = (selectedType != null) ? selectedType : TransportType.BUS;
+
+        return allRoutes.stream()
+                .filter(route -> route.getTransportType() == typeToFilter)
+                .filter(route -> route.getDeparture().equals(start))
+                .map(Trajectory::getArrival)
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    private void filterComboBoxItems(ComboBox<String> comboBox, List<String> sourceItems, String typedText) {
+        String search = typedText == null ? "" : typedText.toLowerCase().trim();
+
+        var filteredItems = sourceItems.stream()
+                .filter(item -> item.toLowerCase().contains(search))
+                .toList();
+
+        updatingComboBoxItems = true;
+        try {
+            comboBox.setItems(FXCollections.observableArrayList(filteredItems));
+            comboBox.getEditor().setText(typedText);
+            comboBox.getEditor().positionCaret(typedText == null ? 0 : typedText.length());
+        } finally {
+            updatingComboBoxItems = false;
+        }
+
+        if (comboBox.isFocused()
+                && typedText != null
+                && !typedText.isBlank()
+                && !filteredItems.isEmpty()) {
+            comboBox.show();
+        } else {
+            comboBox.hide();
+        }
+    }
+
+    private String getComboBoxText(ComboBox<String> comboBox) {
+        String text = comboBox.getEditor().getText();
+        return text == null ? "" : text.trim();
+    }
+
+    private Trajectory findSelectedTrajectory() {
+        String start = getComboBoxText(startStationBox);
+        String end = getComboBoxText(endStationBox);
+
+        if (start.isEmpty() || end.isEmpty() || start.equals(end)) {
+            return null;
+        }
+
+        TransportType selectedType = transportTypeBox.getSelectedType();
+        TransportType typeToFilter = (selectedType != null) ? selectedType : TransportType.BUS;
+
+        return allRoutes.stream()
+                .filter(route -> route.getTransportType() == typeToFilter)
+                .filter(route -> route.getDeparture().equals(start))
+                .filter(route -> route.getArrival().equals(end))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @FXML
+    private void onSwap() {
+        String start = getComboBoxText(startStationBox);
+        String end = getComboBoxText(endStationBox);
+
+        if (start.isEmpty() || end.isEmpty()) {
+            infoLabel.setText("Kies eerst een begin- en eindstation.");
+            return;
+        }
+
+        startStationBox.getEditor().setText(end);
+        endStationBox.getEditor().setText(start);
+        updateEndStationsForSelectedStart();
+        refreshTimes();
+    }
+
+    private void refreshTimes() {
+        Trajectory selected = findSelectedTrajectory();
+        if (selected == null) {
+            timesList.setItems(FXCollections.observableArrayList());
+            if (getComboBoxText(startStationBox).isEmpty() || getComboBoxText(endStationBox).isEmpty()) {
+                infoLabel.setText("Kies een begin- en eindstation.");
+            } else {
+                infoLabel.setText("Geen route gevonden.");
+            }
+            return;
+        }
+
+        infoLabel.setText("");
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+        var items = selected.getDepartureTimes().stream()
+                .map(departure -> {
+                    LocalTime departureTime = LocalTime.parse(departure);
+                    LocalTime arrivalTime = departureTime.plusMinutes(selected.getTravelMinutes());
+                    return "Vertrek " + timeFormat.format(departureTime)
+                            + "   Aankomst " + timeFormat.format(arrivalTime)
+                            + "   Duur: " + selected.getDurationString();
+                })
+                .toList();
+
+        timesList.setItems(FXCollections.observableArrayList(items));
+    }
+
+    private void onTravelSelected() {
+        int selectedIndex = timesList.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < 0) {
+            return;
+        }
+
+        selectedTrajectory = findSelectedTrajectory();
+        if (selectedTrajectory == null) {
+            return;
+        }
+
+        selectedDepartureTime = selectedTrajectory.getDepartureTimes().get(selectedIndex);
+        showDetailsPane();
+    }
+
+    private void showDetailsPane() {
+        searchPane.setManaged(false);
+        searchPane.setVisible(false);
+        detailsScrollPane.setManaged(true);
+        detailsScrollPane.setVisible(true);
+
+        updateDetailsDisplay();
+    }
+
+    private void updateDetailsDisplay() {
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime departureTime = LocalTime.parse(selectedDepartureTime);
+        LocalTime arrivalTime = departureTime.plusMinutes(selectedTrajectory.getTravelMinutes());
+
+        detailsDeparture.setText(selectedTrajectory.getDeparture());
+        detailsArrival.setText(selectedTrajectory.getArrival());
+        detailsDepartureTime.setText(timeFormat.format(departureTime));
+        detailsArrivalTime.setText(timeFormat.format(arrivalTime));
+        detailsDuration.setText(selectedTrajectory.getDurationString());
+        detailsTransportType.setText(selectedTrajectory.getTransportType().toString());
+        detailsTimes.setText(String.join(", ", selectedTrajectory.getDepartureTimes()));
+    }
+
+    private void showSearchPane() {
+        searchPane.setManaged(true);
+        searchPane.setVisible(true);
+        detailsScrollPane.setManaged(false);
+        detailsScrollPane.setVisible(false);
+    }
+
+    @FXML
+    private void onBack() {
+        showSearchPane();
+        timesList.getSelectionModel().clearSelection();
+        selectedTrajectory = null;
+        selectedDepartureTime = null;
+    }
+}
+
+```
+
+BESTAND: FixedRoutes.java
+=========================
+
+Pad:
+  src/main/java/com/example/demo/model/FixedRoutes.java
+
+Uitleg:
+  Bevat vaste voorbeeldroutes voor bus en trein. Er wordt geen database of externe API gebruikt.
+
+Broncode:
+```
 package com.example.demo.model;
 
-public enum TransportType {
-    BUS("Bus"),
-    TREIN("Trein"); // choose displayed label here
+import java.util.List;
 
-    private final String label;
+public class FixedRoutes {
 
-    TransportType(String label) {
-        this.label = label;
-    }
+    public static List<Trajectory> getAllRoutes() {
+        return List.of(
+                //Bus routes
+                new Trajectory("Zwolle", "Utrecht", List.of("08:30", "10:15", "17:35"), 55, TransportType.BUS),
+                new Trajectory("Utrecht", "Zwolle", List.of("09:05", "12:05", "18:10"), 55, TransportType.BUS),
+                //Trein routes
+                new Trajectory("Zwolle", "Utrecht", List.of("07:00", "11:30", "16:45"), 45, TransportType.TREIN),
+                new Trajectory("Utrecht", "Zwolle", List.of("08:15", "13:00", "17:20"), 45, TransportType.TREIN),
 
-    public String getLabel() {
-        return label;
-    }
+                //Bus
+                new Trajectory("Amsterdam", "Rotterdam", List.of("07:05", "12:40", "18:20"), 95, TransportType.BUS),
+                new Trajectory("Rotterdam", "Amsterdam", List.of("08:10", "14:05", "19:40"), 95, TransportType.BUS),
+                //Trein
+                new Trajectory("Amsterdam", "Rotterdam", List.of("07:45", "13:00", "19:00"), 50, TransportType.TREIN),
+                new Trajectory("Rotterdam", "Amsterdam", List.of("09:00", "11:15", "20:00"), 50, TransportType.TREIN),
 
-    @Override
-    public String toString() {
-        return label;
+                //Bus
+                new Trajectory("Groningen", "Leeuwarden", List.of("09:10", "13:55", "20:05"), 100,TransportType.BUS),
+                new Trajectory("Leeuwarden", "Groningen", List.of("07:35", "15:10", "21:15"), 100, TransportType.BUS),
+
+                //trein
+                new Trajectory("Groningen", "Leeuwarden", List.of("08:00", "13:00", "19:45"), 85,TransportType.TREIN),
+                new Trajectory("Leeuwarden", "Groningen", List.of("09:35", "14:00", "21:40"), 85,TransportType.TREIN)
+
+        );
     }
 }
 
 
-BESTAND: src/main/java/com/example/demo/model/Trajectory.java
-============================================================
+
+```
+
+BESTAND: Trajectory.java
+========================
+
+Pad:
+  src/main/java/com/example/demo/model/Trajectory.java
 
 Uitleg:
-Trajectory is de modelklasse voor een traject.
-
-Velden:
-- departure: vertrekplaats.
-- arrival: aankomstplaats.
-- departureTimes: beschikbare vertrektijden.
-- travelMinutes: reistijd in minuten.
-- transportType: Bus of Trein.
-
-Belangrijke methodes:
-- getDurationString() zet minuten om naar leesbare tekst.
-- toString() bepaalt de routeweergave in de ComboBox.
+  Modelklasse voor een route. Bevat vertrek, aankomst, vertrektijden, reistijd in minuten en vervoerstype. getDurationString() zet minuten om naar leesbare tekst.
 
 Broncode:
-
+```
 package com.example.demo.model;
 
 import java.util.List;
 
 public class Trajectory {
-    private static final String ARROW = " → ";
+    private static final String ARROW = " â†’ ";
 
     private final String departure;
     private final String arrival;
@@ -319,84 +721,109 @@ public class Trajectory {
     }
 }
 
+```
 
-BESTAND: src/main/java/com/example/demo/model/FixedRoutes.java
-=============================================================
+BESTAND: TransportType.java
+===========================
+
+Pad:
+  src/main/java/com/example/demo/model/TransportType.java
 
 Uitleg:
-FixedRoutes bevat vaste voorbeelddata. Voor elke hoofdroute bestaat er een
-heen- en terugrichting. Er zijn routes voor Bus en Trein.
-
-Routes:
-- Zwolle <-> Utrecht
-- Amsterdam <-> Rotterdam
-- Groningen <-> Leeuwarden
+  Enum voor de vervoerstypen BUS en TREIN. Het label wordt gebruikt in de UI.
 
 Broncode:
-
+```
 package com.example.demo.model;
 
-import java.util.List;
+public enum TransportType {
+    BUS("Bus"),
+    TREIN("Trein"); // choose displayed label here
 
-public class FixedRoutes {
+    private final String label;
 
-    public static List<Trajectory> getAllRoutes() {
-        return List.of(
-                //Bus routes
-                new Trajectory("Zwolle", "Utrecht", List.of("08:30", "10:15", "17:35"), 55, TransportType.BUS),
-                new Trajectory("Utrecht", "Zwolle", List.of("09:05", "12:05", "18:10"), 55, TransportType.BUS),
-                //Trein routes
-                new Trajectory("Zwolle", "Utrecht", List.of("07:00", "11:30", "16:45"), 45, TransportType.TREIN),
-                new Trajectory("Utrecht", "Zwolle", List.of("08:15", "13:00", "17:20"), 45, TransportType.TREIN),
+    TransportType(String label) {
+        this.label = label;
+    }
 
-                //Bus
-                new Trajectory("Amsterdam", "Rotterdam", List.of("07:05", "12:40", "18:20"), 95, TransportType.BUS),
-                new Trajectory("Rotterdam", "Amsterdam", List.of("08:10", "14:05", "19:40"), 95, TransportType.BUS),
-                //Trein
-                new Trajectory("Amsterdam", "Rotterdam", List.of("07:45", "13:00", "19:00"), 50, TransportType.TREIN),
-                new Trajectory("Rotterdam", "Amsterdam", List.of("09:00", "11:15", "20:00"), 50, TransportType.TREIN),
+    public String getLabel() {
+        return label;
+    }
 
-                //Bus
-                new Trajectory("Groningen", "Leeuwarden", List.of("09:10", "13:55", "20:05"), 100,TransportType.BUS),
-                new Trajectory("Leeuwarden", "Groningen", List.of("07:35", "15:10", "21:15"), 100, TransportType.BUS),
-
-                //trein
-                new Trajectory("Groningen", "Leeuwarden", List.of("08:00", "13:00", "19:45"), 85,TransportType.TREIN),
-                new Trajectory("Leeuwarden", "Groningen", List.of("09:35", "14:00", "21:40"), 85,TransportType.TREIN)
-
-        );
+    @Override
+    public String toString() {
+        return label;
     }
 }
+```
 
+BESTAND: DashboardView.java
+===========================
 
-BESTAND: src/main/java/com/example/demo/view/DashboardView.java
-==============================================================
+Pad:
+  src/main/java/com/example/demo/view/DashboardView.java
 
 Uitleg:
-DashboardView bouwt het hoofdscherm. De root is een BorderPane met CSS-class
-app-root. In het midden staat een VBox met CSS-class planner-shell. Daarin wordt
-trajectory-selection-view.fxml geladen.
+  Bouwt de globale layout buiten FXML. Bevat de bovenbalk, hamburgerknop, zijmenu en laadt de trajectselectie-FXML in het midden.
 
 Broncode:
-
+```
 package com.example.demo.view;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.geometry.Pos;
 
 import java.io.IOException;
 
 public class DashboardView {
+
     private final BorderPane mainLayout;
+    private boolean menuOpen = false;
 
     public DashboardView() {
         this.mainLayout = new BorderPane();
         this.mainLayout.setPadding(new Insets(32));
         this.mainLayout.getStyleClass().add("app-root");
 
+        // ---------------------------
+        // 1. Bovenbalk met hamburger RECHTS
+        // ---------------------------
+        Node hamburger = maakHamburgerIcoon();
+
+        HBox bovenbalk = new HBox();
+        bovenbalk.setPadding(new Insets(10));
+        bovenbalk.setStyle("-fx-background-color: #21f3955a;");
+        bovenbalk.setAlignment(Pos.CENTER_LEFT); // <-- streepjes links, rest van de ruimte rechts
+        bovenbalk.getChildren().add(hamburger);
+
+        // ---------------------------
+        // 2. Zijmenu (rechts, GROEN)
+        // ---------------------------
+        VBox zijMenu = maakZijMenu();
+
+        hamburger.setOnMouseClicked(e -> {
+            if (menuOpen) {
+                mainLayout.setLeft(null);
+            } else {
+                mainLayout.setLeft(zijMenu);
+            }
+            menuOpen = !menuOpen;
+        });
+
+        mainLayout.setTop(bovenbalk);
+
+        // ---------------------------
+        // 3. Center content (jouw FXML)
+        // ---------------------------
         VBox centerContent = new VBox();
         centerContent.setSpacing(20);
         centerContent.getStyleClass().add("planner-shell");
@@ -406,9 +833,49 @@ public class DashboardView {
         mainLayout.setCenter(centerContent);
     }
 
+    // ---------------------------
+    // Hamburger icoon (drie streepjes)
+    // ---------------------------
+    private Node maakHamburgerIcoon() {
+        Rectangle streep1 = new Rectangle(25, 3);
+        Rectangle streep2 = new Rectangle(25, 3);
+        Rectangle streep3 = new Rectangle(25, 3);
+
+        streep1.setArcHeight(2);
+        streep2.setArcHeight(2);
+        streep3.setArcHeight(2);
+
+        VBox icoon = new VBox(5, streep1, streep2, streep3);
+        icoon.setPadding(new Insets(10));
+        icoon.setCursor(Cursor.HAND);
+
+        return icoon;
+    }
+
+    // ---------------------------
+    // Zijmenu (groen + Home + Favorieten)
+    // ---------------------------
+    private VBox maakZijMenu() {
+        VBox menu = new VBox(15);
+        menu.setPadding(new Insets(20));
+        menu.setStyle("-fx-background-color: #25845e5f;"); // <-- GROEN menu
+        menu.setPrefWidth(180);
+
+        Button knopHome = new Button("Home");
+        Button knopFavorieten = new Button("Favorieten");
+
+        menu.getChildren().addAll(knopHome, knopFavorieten);
+
+        return menu;
+    }
+
+    // ---------------------------
+    // FXML loader
+    // ---------------------------
     private Parent loadTrajectorySelection() {
         try {
-            return FXMLLoader.load(DashboardView.class.getResource("/com/example/demo/view/trajectory-selection-view.fxml"));
+            return FXMLLoader.load(DashboardView.class.getResource(
+                    "/com/example/demo/view/trajectory-selection-view.fxml"));
         } catch (IOException e) {
             throw new IllegalStateException("Het laden van de trajectselectieweergave is mislukt.", e);
         }
@@ -419,67 +886,19 @@ public class DashboardView {
     }
 }
 
+```
 
-BESTAND: src/main/java/com/example/demo/view/SelectionButton.java
-================================================================
+BESTAND: TransportTypeBox.java
+==============================
 
-Uitleg:
-SelectionButton is een herbruikbare ToggleButton. De knop kan met of zonder icoon
-worden gemaakt. Bij een icoon wordt tekst boven/onder het icoon gecentreerd.
-
-Broncode:
-
-package com.example.demo.view;
-
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-
-public class SelectionButton extends ToggleButton {
-
-    public SelectionButton(String label, ToggleGroup group) {
-        super(label);
-        configure(group);
-    }
-
-    public SelectionButton(String label, ToggleGroup group, Node icon) {
-        super(label, icon);
-        configure(group);
-        this.setContentDisplay(ContentDisplay.TOP);
-        this.setGraphicTextGap(6);
-        this.setAlignment(Pos.CENTER);
-    }
-
-    private void configure(ToggleGroup group) {
-        this.setToggleGroup(group);
-
-        this.setMinWidth(130);
-        this.setMinHeight(84);
-        this.setPrefHeight(84);
-        this.setPrefWidth(140);
-        this.setAlignment(Pos.CENTER);
-
-        this.getStyleClass().add("transport-toggle");
-    }
-}
-
-
-BESTAND: src/main/java/com/example/demo/view/TransportTypeBox.java
-=================================================================
+Pad:
+  src/main/java/com/example/demo/view/TransportTypeBox.java
 
 Uitleg:
-TransportTypeBox toont twee SelectionButtons: Bus en Trein. Beide zitten in
-dezelfde ToggleGroup. Bus is standaard geselecteerd. De knoppen krijgen iconen uit
-src/main/resources/icons.
-
-Belangrijke methodes:
-- getSelectedType() geeft het geselecteerde TransportType terug.
-- setOnTransportTypeChanged(...) laat de controller reageren op wijzigingen.
+  Zelfgemaakte HBox met Bus- en Trein-toggleknoppen. Gebruikt iconen uit resources/icons en geeft de gekozen TransportType terug.
 
 Broncode:
-
+```
 package com.example.demo.view;
 
 import com.example.demo.model.TransportType;
@@ -553,15 +972,68 @@ public class TransportTypeBox extends HBox {
 }
 
 
-BESTAND: src/main/java/com/example/demo/view/AssistanceToggle.java
-=================================================================
+```
+
+BESTAND: SelectionButton.java
+=============================
+
+Pad:
+  src/main/java/com/example/demo/view/SelectionButton.java
 
 Uitleg:
-AssistanceToggle toont de vraag of de gebruiker assistentie wil. De keuze bestaat
-uit Ja/Nee. Nee is standaard geselecteerd.
+  Herbruikbare ToggleButton voor selectieknoppen, met vaste afmetingen en optioneel icoon.
 
 Broncode:
+```
+package com.example.demo.view;
 
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+
+public class SelectionButton extends ToggleButton {
+
+    public SelectionButton(String label, ToggleGroup group) {
+        super(label);
+        configure(group);
+    }
+
+    public SelectionButton(String label, ToggleGroup group, Node icon) {
+        super(label, icon);
+        configure(group);
+        this.setContentDisplay(ContentDisplay.TOP);
+        this.setGraphicTextGap(6);
+        this.setAlignment(Pos.CENTER);
+    }
+
+    private void configure(ToggleGroup group) {
+        this.setToggleGroup(group);
+
+        this.setMinWidth(130);
+        this.setMinHeight(84);
+        this.setPrefHeight(84);
+        this.setPrefWidth(140);
+        this.setAlignment(Pos.CENTER);
+
+        this.getStyleClass().add("transport-toggle");
+    }
+}
+
+```
+
+BESTAND: AssistanceToggle.java
+==============================
+
+Pad:
+  src/main/java/com/example/demo/view/AssistanceToggle.java
+
+Uitleg:
+  Zelfgemaakte VBox waarmee de gebruiker Ja of Nee kiest voor assistentie tijdens de reis.
+
+Broncode:
+```
 package com.example.demo.view;
 
 import javafx.scene.control.Label;
@@ -621,79 +1093,19 @@ public class AssistanceToggle extends VBox {
 }
 
 
-BESTAND: src/main/java/com/example/demo/controller/TrajectorySelectionController.java
-==================================================================================
+```
+
+BESTAND: HelloApplication.java
+==============================
+
+Pad:
+  src/main/java/com/example/demo/view/HelloApplication.java
 
 Uitleg:
-TrajectorySelectionController bestuurt trajectory-selection-view.fxml.
-
-Belangrijke onderdelen:
-- routeBox: ComboBox met gefilterde Trajectory-objecten.
-- searchField: los tekstveld voor zoeken.
-- transportTypeBox: keuze tussen Bus en Trein.
-- swapButton: knop om de omgekeerde route te kiezen.
-- timesList: lijst met beschikbare reistijden.
-- searchPane: zoek- en tijdenweergave.
-- detailsScrollPane/detailsPane: detailweergave na selectie van een reistijd.
-- backButton: terug naar de zoekweergave.
-- allRoutes: volledige routelijst.
-- selectedTrajectory en selectedDepartureTime: huidige keuze voor het detailscherm.
-
-Belangrijke logica:
-- initialize() zet listeners en toont de zoekweergave.
-- applyFilters() filtert op zoektekst en vervoerstype.
-- onSwap() zoekt een omgekeerde route met hetzelfde vervoerstype.
-- refreshTimes() berekent aankomsttijden met LocalTime.plusMinutes().
-- onTravelSelected() opent het detailscherm.
-- updateDetailsDisplay() vult de detailvelden.
-- onBack() gaat terug naar de zoekweergave.
-
-
-BESTAND: src/main/resources/com/example/demo/view/trajectory-selection-view.fxml
-==============================================================================
-
-Uitleg:
-Dit FXML-bestand beschrijft de hoofdweergave van de reisplanner:
-- titel "OV-reisplanner";
-- formulier "Plan je reis";
-- TransportTypeBox voor Bus/Trein;
-- TextField voor zoeken;
-- ComboBox voor routekeuze;
-- Wissel-knop;
-- ListView voor reistijden;
-- ScrollPane met reisdetails;
-- AssistanceToggle onderaan.
-
-Let op:
-De huidige FXML bevat tekst met pijlsymbolen. Als deze verkeerd wordt weergegeven
-als mojibake, controleer dan de bestandsencoding in de editor en gebruik UTF-8.
-
-
-BESTAND: src/main/resources/com/example/demo/view/app.css
-=========================================================
-
-Uitleg:
-app.css bevat de styling voor:
-- de achtergrond van de applicatie;
-- de centrale plannerkaart;
-- titels, labels en meldingen;
-- zoekveld en route-ComboBox;
-- primaire knoppen;
-- bus/trein-toggleknoppen;
-- reistijdenlijst;
-- detailpaneel;
-- assistentieblok.
-
-
-BESTAND: src/main/java/com/example/demo/view/HelloApplication.java
-=================================================================
-
-Uitleg:
-HelloApplication is een overgebleven JavaFX-templateklasse. De normale applicatie
-start niet via deze klasse, maar via com.example.demo.app.Launcher.
+  Oude JavaFX-templateklasse. Deze hoort niet bij de normale startflow, omdat de applicatie via Launcher en MainApplication start.
 
 Broncode:
-
+```
 package com.example.demo.view;
 
 import javafx.application.Application;
@@ -714,59 +1126,344 @@ public class HelloApplication extends Application {
     }
 }
 
+```
 
-BESTAND: src/main/resources/com/example/demo/view/hello-view.fxml
-=================================================================
+BESTAND: trajectory-selection-view.fxml
+=======================================
+
+Pad:
+  src/main/resources/com/example/demo/view/trajectory-selection-view.fxml
 
 Uitleg:
-hello-view.fxml hoort bij de oude templateweergave. Het bestand verwijst naar
-com.example.demo.controller.HelloController. In de huidige src-map staat die
-controller niet meer als bronbestand. Dit is geen probleem voor de normale
-startflow, omdat Launcher/MainApplication deze hello-view niet gebruikt.
+  FXML-layout voor de reisplanner. Bevat TransportTypeBox, startStationBox, switchknop, endStationBox, reistijdenlijst, detailpaneel en AssistanceToggle.
 
+Broncode:
+```
+<?xml version="1.0" encoding="UTF-8"?>
 
-SAMENVATTING VAN DE HUIDIGE WERKING
-===================================
+<?import com.example.demo.view.AssistanceToggle?>
+<?import com.example.demo.view.TransportTypeBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-Start:
-Launcher -> MainApplication -> DashboardView -> trajectory-selection-view.fxml
+<VBox spacing="16.0" styleClass="planner-card" xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.example.demo.controller.TrajectorySelectionController">
+    <padding>
+        <Insets bottom="32.0" left="32.0" right="32.0" top="32.0"/>
+    </padding>
 
-Controller:
-TrajectorySelectionController haalt routes op via AppFactory, filtert deze op
-TransportType en zoektekst, toont vertrektijden en opent een detailscherm wanneer
-een tijd wordt geselecteerd.
+    <Label text="OV-reisplanner" styleClass="app-title"/>
 
-Data:
-TrajectorySelectionController -> AppFactory -> FixedRoutes -> Trajectory-objecten.
+    <VBox spacing="14.0">
+        <Label text="Plan je reis" styleClass="planner-title"/>
 
-UI:
-TransportTypeBox bepaalt Bus/Trein, AssistanceToggle toont de assistentiekeuze,
-app.css bepaalt de vormgeving.
+        <TransportTypeBox fx:id="transportTypeBox"/>
+        <Label text="Route" styleClass="field-label"/>
+        <HBox spacing="10.0">
+            <ComboBox fx:id="startStationBox"
+                    styleClass="route-combo"
+                    promptText="Beginstation"
+                    maxWidth="1.7976931348623157E308"
+                    HBox.hgrow="ALWAYS"/>
+            <Button fx:id="swapButton" text="Wissel" styleClass="primary-button" onAction="#onSwap"/>
+            <ComboBox fx:id="endStationBox"
+                    styleClass="route-combo"
+                    promptText="Eindstation"
+                    maxWidth="1.7976931348623157E308"
+                    HBox.hgrow="ALWAYS"/>
+        </HBox>
 
+        <Label fx:id="infoLabel" text="" styleClass="message-label"/>
+    </VBox>
 
-CONTROLE
-========
+    <VBox VBox.vgrow="ALWAYS">
+        <VBox fx:id="searchPane" spacing="8.0" managed="true" visible="true" maxHeight="165.0">
+            <Label text="Reistijden" styleClass="field-label"/>
+            <ListView fx:id="timesList" styleClass="times-list" prefHeight="150.0" minHeight="145.0"/>
+        </VBox>
 
-Controle op 31 mei 2026:
-- broncode_uitleg.txt is bijgewerkt op basis van de huidige bestanden in src.
-- pom.xml gebruikt Java compiler source/target/release 21.
-- De huidige app gebruikt een apart zoekveld in plaats van een bewerkbare ComboBox.
-- De Bus/Trein-keuze wordt nu gebruikt om routes te filteren.
-- De applicatie heeft een detailscherm voor geselecteerde reistijden.
-- De applicatie heeft een assistentie-toggle.
-- De broncode zelf is bij deze documentatie-update niet aangepast.
-- mvn test is niet uitgevoerd, omdat dit alleen een tekstupdate is.
+        <ScrollPane fx:id="detailsScrollPane"
+                    managed="false"
+                    visible="false"
+                    fitToWidth="true"
+                    styleClass="details-scroll"
+                    VBox.vgrow="ALWAYS">
+            <VBox fx:id="detailsPane" spacing="12.0" styleClass="details-pane">
+                <Label text="Reisdetails" styleClass="section-title"/>
 
+                <GridPane hgap="15.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints maxWidth="120.0"/>
+                        <ColumnConstraints maxWidth="1.7976931348623157E308" hgrow="ALWAYS"/>
+                    </columnConstraints>
 
-ADVIEZEN
-========
+                    <Label text="Vertrekstation:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <Label fx:id="detailsDeparture" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-1. Werk AppFactory.java netjes op qua inspringing en imports.
-2. Controleer de encoding van pijlsymbolen in Trajectory.java en FXML-bestanden;
-   gebruik bij voorkeur overal UTF-8 of vervang pijlen door ASCII "->".
-3. Verwijder HelloApplication en hello-view.fxml, of voeg HelloController terug
-   toe als deze template bewust bewaard moet blijven.
-4. Overweeg tests toe te voegen voor filteren op TransportType en voor de
-   reistijdberekening.
-5. Maak de naamgeving consistenter: het project gebruikt Engels in packages en
-   modelvelden, maar Nederlands in de UI.
+                    <Label text="Aankomststation:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <Label fx:id="detailsArrival" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                    <Label text="Vertrektijd:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <Label fx:id="detailsDepartureTime" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                    <Label text="Aankomsttijd:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <Label fx:id="detailsArrivalTime" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                    <Label text="Reisduur:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                    <Label fx:id="detailsDuration" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                    <Label text="Vervoerstype:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                    <Label fx:id="detailsTransportType" text="-" styleClass="detail-value" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                    <Label text="Beschikbare tijden:" styleClass="detail-key" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                    <Label fx:id="detailsTimes" text="-" styleClass="detail-value" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                </GridPane>
+
+                <HBox spacing="10.0" styleClass="details-actions">
+                    <Button fx:id="backButton" text="Terug"/>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <AssistanceToggle/>
+</VBox>
+
+```
+
+BESTAND: app.css
+================
+
+Pad:
+  src/main/resources/com/example/demo/view/app.css
+
+Uitleg:
+  CSS-styling voor de applicatie: root, plannerkaart, labels, knoppen, toggles, lijst, details en assistentieblok.
+
+Broncode:
+```
+.app-root {
+    -fx-background-color: #f6f8f6;
+}
+
+.planner-shell {
+    -fx-alignment: top-center;
+    -fx-fill-width: true;
+}
+
+.planner-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-border-color: #dce7dd;
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(39, 67, 48, 0.12), 18, 0.16, 0, 5);
+    -fx-max-width: 950;
+    -fx-min-width: 850;
+    -fx-pref-width: 900;
+}
+
+.planner-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #243c2d;
+}
+
+.app-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3f8066;
+}
+
+.section-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #243c2d;
+}
+
+.field-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #405348;
+}
+
+.message-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #5f7065;
+}
+
+.search-field,
+.route-combo {
+    -fx-background-color: #f9fbf8;
+    -fx-border-color: #cfdcd2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-min-height: 46;
+    -fx-pref-height: 46;
+    -fx-font-size: 14px;
+}
+
+.button,
+.toggle-button {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+}
+
+.button,
+.primary-button {
+    -fx-background-color: #4f7f68;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 18;
+    -fx-min-height: 46;
+    -fx-pref-height: 46;
+}
+
+.button:hover {
+    -fx-background-color: #436f5a;
+}
+
+.transport-type-box {
+    -fx-padding: 0 0 8 0;
+}
+
+.transport-toggle,
+.choice-toggle {
+    -fx-background-color: #eef4ef;
+    -fx-border-color: #cfdcd2;
+    -fx-text-fill: #2f6f56;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-alignment: center;
+    -fx-border-width: 1;
+}
+
+.transport-toggle:selected,
+.choice-toggle:selected {
+    -fx-background-color: #3f8066;
+    -fx-border-color: #2f7d5c;
+    -fx-text-fill: white;
+}
+
+.times-list {
+    -fx-background-color: #f9fbf8;
+    -fx-border-color: #dce7dd;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-pref-height: 150;
+    -fx-min-height: 145;
+}
+
+.list-cell {
+    -fx-padding: 12 14;
+    -fx-font-size: 14px;
+    -fx-text-fill: #26352c;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #d7eadc;
+    -fx-text-fill: #203829;
+}
+
+.details-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-padding: 0;
+    -fx-pref-height: 280;
+    -fx-min-height: 250;
+    -fx-hbar-policy: never;
+    -fx-vbar-policy: as-needed;
+}
+
+.details-pane {
+    -fx-background-color: #f9fbf8;
+    -fx-background-radius: 8;
+    -fx-border-color: #dce7dd;
+    -fx-border-radius: 8;
+    -fx-padding: 18;
+    -fx-min-height: 240;
+}
+
+.detail-key {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #405348;
+}
+
+.detail-value {
+    -fx-font-size: 12px;
+    -fx-text-fill: #26352c;
+}
+
+.details-actions {
+    -fx-padding: 8 0 0 0;
+}
+
+.assistance-section {
+    -fx-border-color: #eef3ef transparent transparent transparent;
+    -fx-padding: 2 0 0 0;
+}
+
+.assistance-choices {
+    -fx-alignment: center-left;
+    -fx-spacing: 8;
+}
+
+```
+
+BESTAND: hello-view.fxml
+========================
+
+Pad:
+  src/main/resources/com/example/demo/view/hello-view.fxml
+
+Uitleg:
+  Oude template-FXML. Wordt niet gebruikt in de normale startflow. Verwijst naar HelloController, maar die controller staat niet in de huidige broncode.
+
+Broncode:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="16.0" xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.example.demo.controller.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label fx:id="welcomeText" text="Hello view"/>
+    <Button text="Click me" onAction="#onHelloButtonClick"/>
+</VBox>
+
+```
+
+HUIDIGE AANDACHTSPUNTEN
+=======================
+
+1. .idea/workspace.xml is lokaal gewijzigd, maar hoort meestal niet bij functionele broncode.
+2. HelloApplication en hello-view.fxml zijn template-restanten en horen niet bij de normale startflow.
+3. hello-view.fxml verwijst naar HelloController, maar die klasse bestaat niet in de huidige broncode.
+4. De knoppen Home en Favorieten in het zijmenu hebben nog geen actie gekoppeld.
+5. AppFactory.getTrajectory() geeft een lijst terug; getRoutes() of getTrajectories() zou duidelijker zijn.
+6. De typbare ComboBox-filtering is bewust simpel gehouden en werkt op exacte routenamen voor het uiteindelijk vinden van reistijden.
+
+MOGELIJKE VERBETERINGEN
+=======================
+
+- Oude HelloApplication/hello-view.fxml verwijderen als ze niet meer nodig zijn.
+- Acties toevoegen aan Home en Favorieten.
+- Tests toevoegen voor Trajectory.getDurationString(), filteren, route lookup en wisselen van stations.
+- Route-data later verplaatsen naar repository, JSON-bestand, database of API.
+- Stationnamen eventueel case-insensitive matchen bij findSelectedTrajectory(), als vrije invoer ruimer moet worden ondersteund.
