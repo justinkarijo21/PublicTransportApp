@@ -14,7 +14,7 @@ public class FixedStations {
                 new Station("Den Haag", 12, true, "Den Haag"),
                 new Station("Eindhoven", 6, true, "Eindhoven"),
                 new Station("Maastricht", 5, false, "Maastricht"),
-                new Station("Nijmegen", 4, true, "Nijmegen"),
+                new Station("Nijmegen", 4, false, "Nijmegen"),
                 new Station("Utrecht", 12, true, "Utrecht" )
         );
     }

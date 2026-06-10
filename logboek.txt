@@ -282,3 +282,199 @@ route.getArrival()
 Belangrijk
 
 Deze wijziging is groter dan alleen FixedRoutes. Na het omzetten kunnen er rode errors ontstaan in de controller. Die zijn normaal, omdat sommige code nog String verwacht terwijl Trajectory dan Station gebruikt.
+
+Voortgang later op 10 juni 2026
+
+Onderwerp: Station objecten gebruiken in Trajectory en routes
+
+Vandaag heb ik daarna verder gewerkt aan het gebruiken van de nieuwe Station class in de routes.
+Eerder gebruikte Trajectory nog gewone String waarden voor vertrek en aankomst. Nu is de bedoeling dat een route echte Station objecten gebruikt.
+
+Wat ik heb aangepast
+
+1. Trajectory aangepast van String naar Station
+
+Eerst had Trajectory deze velden:
+
+private final String departure;
+private final String arrival;
+
+Deze zijn veranderd naar:
+
+private final Station departure;
+private final Station arrival;
+
+Ook de constructor is aangepast zodat die Station objecten ontvangt:
+
+public Trajectory(Station departure, Station arrival, List<String> departureTimes, int travelMinutes, TransportType transportType)
+
+Hierdoor kan een route later niet alleen de naam van een station gebruiken, maar ook andere gegevens zoals stad, perrons en rolstoeltoegankelijkheid.
+
+2. Probleem in FixedRoutes
+
+Na het aanpassen van Trajectory ontstonden fouten in FixedRoutes.
+
+Oorzaak:
+FixedRoutes maakte routes nog steeds zo:
+
+new Trajectory("Zwolle", "Utrecht", List.of(...), 55, TransportType.BUS)
+
+Maar Trajectory verwachtte nu geen String meer, maar Station.
+
+Foutmelding in betekenis:
+
+String cannot be converted to Station
+
+Oplossing:
+FixedRoutes is omgezet zodat eerst Station objecten worden opgehaald:
+
+Station zwolle = findStationByName("Zwolle");
+Station utrecht = findStationByName("Utrecht");
+
+Daarna worden routes gemaakt met Station variabelen:
+
+new Trajectory(zwolle, utrecht, List.of("08:30", "10:15", "17:35"), 55, TransportType.BUS)
+
+3. FixedRoutes volledig omgezet
+
+Alle routes in FixedRoutes zijn omgezet van String namen naar Station objecten.
+
+Voorbeelden:
+
+Oud:
+
+new Trajectory("Amsterdam", "Rotterdam", List.of("07:05", "12:40", "18:20"), 95, TransportType.BUS)
+
+Nieuw:
+
+new Trajectory(amsterdam, rotterdam, List.of("07:05", "12:40", "18:20"), 95, TransportType.BUS)
+
+4. Tijdelijke helper in FixedRoutes
+
+Omdat FixedStations nog geen findByName methode had, is in FixedRoutes een private helper gebruikt:
+
+private static Station findStationByName(String name) {
+    return FixedStations.getAllStations().stream()
+            .filter(station -> station.getName().equals(name))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Station not found: " + name));
+}
+
+Deze zoekt een station in FixedStations op basis van de naam.
+
+Belangrijk:
+Later kan deze helper eventueel worden verplaatst naar FixedStations, zodat andere classes hem ook kunnen gebruiken.
+
+5. Model compilecheck
+
+De volgende model/app classes zijn samen gecontroleerd:
+
+- Station
+- FixedStations
+- TransportType
+- Trajectory
+- FixedRoutes
+- AppFactory
+
+Resultaat:
+Deze compileerden goed.
+
+6. Probleem in TrajectorySelectionController
+
+Na het omzetten van Trajectory ontstonden fouten in TrajectorySelectionController.
+
+Oorzaak:
+De controller gebruikte nog steeds getDeparture() en getArrival() alsof die String teruggeven.
+
+Voorbeeld oude code:
+
+.map(Trajectory::getDeparture)
+
+Vroeger gaf dit een String terug.
+Nu geeft dit een Station terug.
+
+Daardoor ontstond een fout zoals:
+
+List<Station> cannot be converted to List<String>
+
+7. Oplossing in TrajectorySelectionController
+
+De ComboBoxen blijven voorlopig String gebruiken, omdat de gebruiker stationnamen kiest.
+Daarom moet de controller uit een Station object de naam halen met getName().
+
+Voorbeelden van aanpassingen:
+
+Oud:
+
+.map(Trajectory::getDeparture)
+
+Nieuw:
+
+.map(route -> route.getDeparture().getName())
+
+Oud:
+
+.filter(route -> route.getDeparture().equals(start))
+
+Nieuw:
+
+.filter(route -> route.getDeparture().getName().equals(start))
+
+Oud:
+
+.filter(route -> route.getArrival().equals(end))
+
+Nieuw:
+
+.filter(route -> route.getArrival().getName().equals(end))
+
+Oud:
+
+detailsDeparture.setText(selectedTrajectory.getDeparture());
+detailsArrival.setText(selectedTrajectory.getArrival());
+
+Nieuw:
+
+detailsDeparture.setText(selectedTrajectory.getDeparture().getName());
+detailsArrival.setText(selectedTrajectory.getArrival().getName());
+
+8. Belangrijk leerpunt
+
+Trajectory gebruikt nu echte Station objecten.
+Maar de UI werkt nog met String namen.
+Daarom moet de controller steeds bewust kiezen:
+
+- Heb ik het hele Station object nodig? Gebruik getDeparture() of getArrival().
+- Heb ik alleen de naam nodig? Gebruik getDeparture().getName() of getArrival().getName().
+
+9. Huidige structuur na deze stappen
+
+Station.java
+- Model voor een station.
+- Bevat naam, perrons, rolstoeltoegankelijkheid en stad.
+
+FixedStations.java
+- Bevat alle vaste stations.
+
+Trajectory.java
+- Bevat vertrekstation en aankomststation als Station objecten.
+
+FixedRoutes.java
+- Bevat alle vaste routes.
+- Gebruikt Station objecten in plaats van String namen.
+
+TrajectorySelectionController.java
+- Laat de gebruiker nog steeds stationnamen kiezen met ComboBox<String>.
+- Zet Station objecten om naar namen met getName().
+
+10. Volgende mogelijke verbeteringen
+
+- findStationByName verplaatsen van FixedRoutes naar FixedStations.
+- toString() van Station toevoegen zodat een Station netjes zijn naam toont.
+- Trajectory.toString() aanpassen naar departure.getName() + " -> " + arrival.getName().
+- Controleren of de volledige JavaFX app via IntelliJ start.
+- Daarna committen met een duidelijke Nederlandse commit message.
+
+Mogelijke commit message:
+
+Gebruik Station objecten in trajecten en routes
