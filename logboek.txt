@@ -1,0 +1,284 @@
+﻿Logboek - 10 juni 2026
+
+Onderwerp: Station class en vaste stations toevoegen
+
+Vandaag heb ik gewerkt aan het maken van een Station class voor mijn Java project.
+Het doel was om stations niet alleen als tekst te gebruiken, maar later ook extra gegevens te kunnen opslaan zoals stad, aantal perrons en rolstoeltoegankelijkheid.
+
+Wat ik heb gedaan
+
+1. Station class gemaakt
+
+Ik ben begonnen met een nieuwe class:
+
+Station.java
+
+Deze class is bedoeld als model voor een station. Eerst had de class alleen een naam:
+
+- name
+
+Later heb ik besloten om alvast extra velden toe te voegen, omdat ik die later nodig heb:
+
+- name
+- platforms
+- wheelchairAccessible
+- city
+
+De constructor is daarna aangepast zodat elk Station object deze gegevens meekrijgt.
+
+2. Eerste fout: Station buiten de class aangemaakt
+
+Ik probeerde eerst dit te doen:
+
+Station amersfoort = new Station("Amersfoort");
+
+Deze regel stond buiten de class. Dat gaf een fout, omdat Java geen losse variabele-declaraties op bestandsniveau toestaat.
+
+Oplossing:
+De regel moest binnen een class, method of aparte lijst-class staan. Ik heb geleerd dat Station.java alleen de blauwdruk moet zijn voor een station, niet de opslagplek voor alle stations.
+
+3. Stations eerst in een methode gezet
+
+Daarna had ik stations tijdelijk in een methode gezet binnen Station.java:
+
+public void station() {
+    Station amersfoort = new Station("Amersfoort");
+    ...
+}
+
+Dit compileerde wel, maar was niet handig. De stations bestaan dan alleen tijdelijk binnen die methode en kunnen nergens anders makkelijk gebruikt worden.
+
+Conclusie:
+Deze lijst hoort niet in Station.java.
+
+4. Besloten om een aparte FixedStations class te maken
+
+Omdat stations later extra gegevens krijgen, heb ik gekozen om een aparte class te maken:
+
+FixedStations.java
+
+Deze class bevat een vaste lijst met stations.
+
+Waarom:
+
+- Station.java beschrijft een station.
+- FixedStations.java bewaart de vaste lijst met stations.
+- FixedRoutes.java blijft voorlopig routes met String namen gebruiken.
+- Later kan Trajectory eventueel echte Station objecten gebruiken.
+
+5. Tweede fout: List import vergeten
+
+In FixedStations gebruikte ik:
+
+List<Station>
+List.of(...)
+
+Maar ik had deze import eerst niet toegevoegd:
+
+import java.util.List;
+
+Fout:
+Java kende List niet.
+
+Oplossing:
+Bovenin FixedStations.java toegevoegd:
+
+import java.util.List;
+
+6. Derde fout: constructor en aanroepen kwamen niet overeen
+
+Ik had Station uitgebreid met extra velden:
+
+- platforms
+- wheelchairAccessible
+- city
+
+Maar de constructor had eerst alleen:
+
+public Station(String name)
+
+Daardoor kon Java deze waarden niet goed invullen:
+
+this.platforms = platforms;
+this.wheelchairAccessible = wheelchairAccessible;
+this.city = city;
+
+Fout:
+De variabelen platforms, wheelchairAccessible en city bestonden niet als constructor-parameters.
+
+Oplossing:
+De constructor aangepast naar:
+
+public Station(String name, int platforms, boolean wheelchairAccessible, String city)
+
+Daarna moesten alle stations in FixedStations ook vier waarden krijgen.
+
+7. Fictieve stationslijst toegevoegd
+
+In FixedStations heb ik een lijst gemaakt met voorbeelddata:
+
+- Amersfoort
+- Zwolle
+- Amsterdam
+- Rotterdam
+- Groningen
+- Leeuwarden
+- Den Haag
+- Eindhoven
+- Maastricht
+- Nijmegen
+
+Elk station heeft nu:
+
+- naam
+- aantal perrons
+- rolstoeltoegankelijk ja/nee
+- stad
+
+Voorbeeld:
+
+new Station("Amersfoort", 6, true, "Amersfoort")
+
+8. Compilecheck gedaan
+
+Station.java en FixedStations.java zijn samen gecontroleerd met javac.
+
+Resultaat:
+Ze compileren goed.
+
+Huidige structuur
+
+Station.java
+- Model voor een enkel station.
+- Bevat private final velden.
+- Bevat een constructor.
+- Bevat nu in ieder geval getName().
+
+FixedStations.java
+- Bevat een vaste lijst met Station objecten.
+- Heeft een static methode getAllStations().
+- Gebruikt import java.util.List.
+
+Belangrijk leerpunt
+
+Een model class zoals Station moet beschrijven wat een station is.
+Een lijst met vaste data hoort beter in een aparte class zoals FixedStations.
+
+Volgende stap
+
+Later kan ik getters toevoegen voor de nieuwe velden:
+
+public int getPlatforms()
+public boolean isWheelchairAccessible()
+public String getCity()
+
+Daarna kan de UI of andere code deze gegevens gebruiken.
+
+Nog latere stap
+
+Trajectory gebruikt nu waarschijnlijk nog String waarden voor begin- en eindstations.
+Later kan dit eventueel worden aangepast naar echte Station objecten.
+
+Volgende geplande stap: Station gebruiken in Trajectory
+
+Doel
+
+De routes moeten later niet meer alleen tekstnamen gebruiken, maar echte Station objecten. Daardoor kan een route straks ook stationinformatie gebruiken zoals stad, perrons en rolstoeltoegankelijkheid.
+
+Belangrijke structuur
+
+Station.java
+- Beschrijft een enkel station.
+- Bevat gegevens zoals name, platforms, wheelchairAccessible en city.
+
+FixedStations.java
+- Bevat de vaste lijst met alle stations.
+- Heeft getAllStations().
+- Krijgt ook een helper-methode findByName(String name), zodat routes makkelijk een Station kunnen ophalen.
+
+Trajectory.java
+- Moet departure en arrival als Station bewaren, niet meer als String.
+
+FixedRoutes.java
+- Blijft getAllRoutes() gebruiken.
+- Gebruikt FixedStations.findByName(...) om Station objecten op te halen.
+- Maakt daarna Trajectory objecten met Station variabelen.
+
+Stappenplan voor deze wijziging
+
+1. Controleer Station.java
+
+Station moet velden hebben voor:
+
+- name
+- platforms
+- wheelchairAccessible
+- city
+
+Station moet getters hebben zoals:
+
+- getName()
+- getPlatforms()
+- isWheelchairAccessible()
+- getCity()
+
+2. Voeg Utrecht toe aan FixedStations
+
+De routes gebruiken Utrecht, dus Utrecht moet ook in de stationlijst staan.
+
+Voorbeeld:
+
+new Station("Utrecht", 12, true, "Utrecht")
+
+3. Voeg findByName toe aan FixedStations
+
+Deze methode zoekt een station op naam:
+
+public static Station findByName(String name) {
+    return getAllStations().stream()
+            .filter(station -> station.getName().equals(name))
+            .findFirst()
+            .orElseThrow();
+}
+
+4. Controleer Trajectory.java
+
+Trajectory moet Station gebruiken:
+
+private final Station departure;
+private final Station arrival;
+
+De constructor moet ook Station parameters gebruiken:
+
+public Trajectory(Station departure, Station arrival, List<String> departureTimes, int travelMinutes, TransportType transportType)
+
+5. Pas FixedRoutes.java aan
+
+Bovenin getAllRoutes() stations ophalen:
+
+Station zwolle = FixedStations.findByName("Zwolle");
+Station utrecht = FixedStations.findByName("Utrecht");
+
+Daarna routes maken met variabelen:
+
+new Trajectory(zwolle, utrecht, List.of("08:30", "10:15", "17:35"), 55, TransportType.BUS)
+
+Niet meer:
+
+new Trajectory("Zwolle", "Utrecht", ...)
+
+6. Pas later de controller aan
+
+Omdat getDeparture() en getArrival() dan Station objecten teruggeven, moet de controller namen ophalen met:
+
+route.getDeparture().getName()
+route.getArrival().getName()
+
+In plaats van direct:
+
+route.getDeparture()
+route.getArrival()
+
+Belangrijk
+
+Deze wijziging is groter dan alleen FixedRoutes. Na het omzetten kunnen er rode errors ontstaan in de controller. Die zijn normaal, omdat sommige code nog String verwacht terwijl Trajectory dan Station gebruikt.
