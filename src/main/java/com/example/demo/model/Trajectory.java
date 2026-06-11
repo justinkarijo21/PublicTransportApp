@@ -9,6 +9,9 @@ import java.util.Random;
 public class Trajectory {
     private static final String ARROW = " → ";
 
+    private final Station departure;
+    private final Station arrival;
+    private final List<String> departureTimes;
     private final String departure;
     private final String arrival;
     // new: internal representation of departures with status
@@ -16,6 +19,7 @@ public class Trajectory {
     private final int travelMinutes;
     private final TransportType transportType;
 
+    public Trajectory(Station departure, Station arrival, List<String> departureTimes, int travelMinutes, TransportType transportType) {
     // Constructor for backwards-compatibility: accept List<String> and convert to Departure objects
     public Trajectory(String departure, String arrival, List<String> departureTimes, int travelMinutes, TransportType transportType) {
         this.departure = departure;
@@ -31,11 +35,11 @@ public class Trajectory {
         return transportType;
     }
 
-    public String getDeparture() {
+    public Station getDeparture() {
         return departure;
     }
 
-    public String getArrival() {
+    public Station getArrival() {
         return arrival;
     }
 

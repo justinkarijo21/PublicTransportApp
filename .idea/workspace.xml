@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ebade44-7eb7-4389-8500-41007256d128" name="Changes" comment="Bug gefikst waarbij Selection button twee keer voorkwam.">
+    <list default="true" id="eb6a1df6-ce0a-49f7-84f2-699b7ace109a" name="Changes" comment="reis informatie weergave nadat een reistijd wordt geselecteerd">
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15-5-2026_01_30_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15-5-2026_01_30_[Changes]1/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15-5-2026_01_30__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5-6-2026_10_21_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5-6-2026_10_21__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9-6-2026_11_10_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9-6-2026_11_10__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/model/UserSession.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/view/LoginFormView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/view/LoginView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_28-5-2026_09_55_[Changes]1/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_28-5-2026_09_55__Changes_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_28-5-2026_23_51_[Changes]/shelved.patch" beforeDir="false" />
@@ -13,184 +25,26 @@
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_29-5-2026_09_44__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_28-5-2026_09_55_[Changes]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_28-5-2026_09_55__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/model/FixedRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/model/FixedRoutes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/app/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/app/MainApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/view/DashboardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/view/DashboardView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="CopilotChats">
-    <option name="panelChat">
-      <chat>
-        <option name="activeSessionId" value="479f8eb4-fb82-47a2-8911-768d5fcd0d05" />
-        <option name="sessions">
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="a24e21bf-f046-4aed-8977-1a667cbd7a24" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="status" value="Completed" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="4bb7aca4-45f8-4439-bc75-dcf29115c6ba" />
-            <option name="modeId" value="Agent" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="04d1415f-6d57-4634-98c0-64f8b4ce9628" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="ac09db81-7326-454c-896f-6bf5f809fc3f" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="fdcb6fc7-7cd1-4adf-8b8e-b963937c9754" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="14fef95e-11a7-4210-9475-b09eddb98f3e" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="status" value="Completed" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="fc631673-82e9-44d6-80d9-68fefe791111" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="26df7819-7e50-486a-ac50-4edcea48283e" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="4b67ba14-a0c6-408e-949e-8d1970244900" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="status" value="Completed" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="e22b96f3-da8f-46e0-b835-e28d1d68a687" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="93d76169-a467-430f-8b48-e75ca1d04736" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="479f8eb4-fb82-47a2-8911-768d5fcd0d05" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="status" value="Completed" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="e580e29a-63a0-4623-a992-e396dfc22127" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="cf2815e7-613e-4bd5-bd86-f6fe2cd38589" />
-            <option name="modeId" value="Agent" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="status" value="Completed" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="cffa162b-f22a-4b63-920b-17f60ba7d06b" />
-            <option name="modeId" value="Agent" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="status" value="Completed" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="72e4e8b5-554f-4748-9284-4fb140c3157b" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="status" value="Stopped" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="90d79fe0-dc8c-4637-ac89-25b98baebb07" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-          <session>
-            <option name="chatType" value="PANEL" />
-            <option name="id" value="f7dedc7a-b8ca-4583-84a2-064a5bb861a4" />
-            <option name="modeId" value="Ask" />
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-            <option name="targetType" value="LOCAL" />
-          </session>
-        </option>
-        <option name="type" value="PANEL" />
-      </chat>
-    </option>
-  </component>
   <component name="CopilotPersistence">
     <persistenceIdMap>
-      <entry key="_/Users/justinkarijowidjojo/OVAPP3" value="3DOJ1MQBnSlwK2nQ3HwEarqJZH1" />
+      <entry key="_C:/Projects/2025-AD-SD-Template-Project4" value="3DOHJcXg08yWxfQB1oKEpHKiQJW" />
     </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Ask" />
   </component>
   <component name="CopilotUserSelectedModel">
     <selectedModels>
-      <entry key="inline" value="Auto" />
-      <entry key="agent-panel" value="Auto" />
-      <entry key="chat-panel" value="Auto" />
+      <entry key="chat-panel" value="Claude Haiku 4.5" />
+      <entry key="agent-panel" value="Claude Haiku 4.5" />
     </selectedModels>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -208,263 +62,92 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="e4a36822-b4ee-4263-8f33-7efc61497be2" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 5,
-  &quot;fromUser&quot;: false
+  &quot;associatedIndex&quot;: 6
 }</component>
-  <component name="ProjectId" id="3DOJ1MQBnSlwK2nQ3HwEarqJZH1" />
-  <component name="ProjectSessionTemplates">
-    <option name="inlineTemplate">
-      <template>
-        <option name="modeId" value="Ask" />
-        <option name="model">
-          <model>
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-          </model>
-        </option>
-        <option name="targetType" value="LOCAL" />
-      </template>
-    </option>
-    <option name="panelTemplate">
-      <template>
-        <option name="modeId" value="Ask" />
-        <option name="model">
-          <model>
-            <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="auto" />
-          </model>
-        </option>
-        <option name="targetType" value="LOCAL" />
-      </template>
-    </option>
-  </component>
+  <component name="ProjectId" id="3DOHJcXg08yWxfQB1oKEpHKiQJW" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Launcher.executor": "Run",
-    "Application.MainApplication.executor": "Run",
-    "Application.OVapp.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "addTrajectory",
-    "kotlin-language-version-configured": "true",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Launcher.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;ToolWindow.GitHub Copilot Chat.ShowToolbar&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;login&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
-    <configuration name="Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.example.demo.app.Launcher" />
-      <module name="demo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.demo.app.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Launcher" />
-        <item itemvalue="Application.Launcher" />
-        <item itemvalue="Application.Launcher" />
-        <item itemvalue="Application.Launcher" />
-        <item itemvalue="Application.Launcher" />
-      </list>
-    </recent_temporary>
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-IU-252.25557.131" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="1ebade44-7eb7-4389-8500-41007256d128" name="Changes" comment="" />
-      <created>1778146966754</created>
+      <changelist id="eb6a1df6-ce0a-49f7-84f2-699b7ace109a" name="Changes" comment="" />
+      <created>1778146124684</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1778146966754</updated>
-      <workItem from="1778146967766" duration="3408000" />
-      <workItem from="1778228301195" duration="3918000" />
-      <workItem from="1778578075826" duration="146000" />
-      <workItem from="1778578232788" duration="2284000" />
-      <workItem from="1778692033363" duration="5937000" />
-      <workItem from="1778704103114" duration="1739000" />
-      <workItem from="1778705875720" duration="1202000" />
-      <workItem from="1778788534627" duration="3562000" />
-      <workItem from="1778832352247" duration="1206000" />
-      <workItem from="1779139196657" duration="160000" />
-      <workItem from="1779178367820" duration="1821000" />
-      <workItem from="1779184098080" duration="1667000" />
-      <workItem from="1779352186445" duration="5192000" />
-      <workItem from="1779448537666" duration="8677000" />
-      <workItem from="1779783050098" duration="717000" />
-      <workItem from="1779783772360" duration="1164000" />
-      <workItem from="1779786486113" duration="6093000" />
-      <workItem from="1779832366984" duration="6773000" />
-      <workItem from="1780003196486" duration="3399000" />
-      <workItem from="1780392308948" duration="3588000" />
-      <workItem from="1780561618717" duration="3474000" />
-      <workItem from="1780645051900" duration="3775000" />
-      <workItem from="1780920287850" duration="793000" />
+      <updated>1778146124684</updated>
+      <workItem from="1778146125894" duration="214000" />
+      <workItem from="1778574159744" duration="348000" />
+      <workItem from="1778801393090" duration="2698000" />
+      <workItem from="1779178127587" duration="1178000" />
+      <workItem from="1779357203837" duration="380000" />
+      <workItem from="1779790779168" duration="5040000" />
+      <workItem from="1779956828333" duration="4158000" />
+      <workItem from="1780647663969" duration="339000" />
+      <workItem from="1780996237480" duration="7447000" />
+      <workItem from="1781163884768" duration="3624000" />
     </task>
-    <task id="LOCAL-00001" summary="test to gitignore">
+    <task id="LOCAL-00001" summary="test comment verwijderd">
       <option name="closed" value="true" />
-      <created>1778147067460</created>
+      <created>1779357439354</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1778147067460</updated>
+      <updated>1779357439354</updated>
     </task>
-    <task id="LOCAL-00002" summary="Ik heb een SelectionButton class gemaakt, hierin zal ik gaan werken aan de bijhorende feature">
+    <task id="LOCAL-00002" summary="taaloutput bijgewerkt. alle output is nu in het nederlands">
       <option name="closed" value="true" />
-      <created>1778171378445</created>
+      <created>1779795057479</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1778171378445</updated>
+      <updated>1779795057479</updated>
     </task>
-    <task id="LOCAL-00003" summary="FIXED PROBLEMS, made a dashboardview.">
+    <task id="LOCAL-00003" summary="reis informatie weergave nadat een reistijd wordt geselecteerd">
       <option name="closed" value="true" />
-      <created>1778705231251</created>
+      <created>1779960925772</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1778705231252</updated>
+      <updated>1779960925772</updated>
     </task>
-    <task id="LOCAL-00004" summary="push van files">
-      <option name="closed" value="true" />
-      <created>1778705511332</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1778705511332</updated>
-    </task>
-    <task id="LOCAL-00005" summary="De applicatie deed het even niet dus ik heb bugfixes gedaan">
-      <option name="closed" value="true" />
-      <created>1778707286159</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1778707286159</updated>
-    </task>
-    <task id="LOCAL-00006" summary="test commit">
-      <option name="closed" value="true" />
-      <created>1779448864245</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1779448864246</updated>
-    </task>
-    <task id="LOCAL-00007" summary="dit is de opzet voor het functioneel maken van de selection button">
-      <option name="closed" value="true" />
-      <created>1779783125697</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1779783125697</updated>
-    </task>
-    <task id="LOCAL-00008" summary="nieuwe dashboardview zodat hij werkt voor justin">
-      <option name="closed" value="true" />
-      <created>1779784106883</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1779784106883</updated>
-    </task>
-    <task id="LOCAL-00009" summary="deze aanpassingen zorgen ervoor dat er gefilterd wordt op bus en trein">
-      <option name="closed" value="true" />
-      <created>1779792812274</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1779792812274</updated>
-    </task>
-    <task id="LOCAL-00010" summary="bugfixes aan de bus trein knop">
-      <option name="closed" value="true" />
-      <created>1779794283812</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1779794283812</updated>
-    </task>
-    <task id="LOCAL-00011" summary="De bus trein knop is nu werkzaam. Er zijn verschillende tijden te zien bij bus en verschillende tijden bij trein.">
-      <option name="closed" value="true" />
-      <created>1779833456152</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1779833456152</updated>
-    </task>
-    <task id="LOCAL-00012" summary="fixed merged conflict">
-      <option name="closed" value="true" />
-      <created>1779835361620</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1779835361620</updated>
-    </task>
-    <task id="LOCAL-00013" summary="fixed merged conflict">
-      <option name="closed" value="true" />
-      <created>1779836217653</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1779836217653</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Bug gefikst waarbij Selection button twee keer voorkwam.">
-      <option name="closed" value="true" />
-      <created>1779839061772</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1779839061772</updated>
-    </task>
-    <option name="localTasksCounter" value="15" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="test to gitignore" />
-    <MESSAGE value="Ik heb een SelectionButton class gemaakt, hierin zal ik gaan werken aan de bijhorende feature" />
-    <MESSAGE value="FIXED PROBLEMS, made a dashboardview." />
-    <MESSAGE value="push van files" />
-    <MESSAGE value="De applicatie deed het even niet dus ik heb bugfixes gedaan" />
-    <MESSAGE value="test commit" />
-    <MESSAGE value="dit is de opzet voor het functioneel maken van de selection button" />
-    <MESSAGE value="nieuwe dashboardview zodat hij werkt voor justin" />
-    <MESSAGE value="deze aanpassingen zorgen ervoor dat er gefilterd wordt op bus en trein" />
-    <MESSAGE value="bugfixes aan de bus trein knop" />
-    <MESSAGE value="De bus trein knop is nu werkzaam. Er zijn verschillende tijden te zien bij bus en verschillende tijden bij trein." />
-    <MESSAGE value="fixed merged conflict" />
-    <MESSAGE value="Bug gefikst waarbij Selection button twee keer voorkwam." />
-    <option name="LAST_COMMIT_MESSAGE" value="Bug gefikst waarbij Selection button twee keer voorkwam." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/demo/app/Launcher.java</url>
-          <line>7</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="test comment verwijderd" />
+    <MESSAGE value="taaloutput bijgewerkt. alle output is nu in het nederlands" />
+    <MESSAGE value="reis informatie weergave nadat een reistijd wordt geselecteerd" />
+    <option name="LAST_COMMIT_MESSAGE" value="reis informatie weergave nadat een reistijd wordt geselecteerd" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
