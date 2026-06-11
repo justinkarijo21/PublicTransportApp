@@ -1,0 +1,16 @@
+Index: .idea/runConfigurations/Launcher.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ProjectRunConfigurationManager\">\r\n  <configuration default=\"false\" name=\"Launcher\" type=\"Application\" factoryName=\"Application\" singleton=\"false\" nameIsGenerated=\"true\">\r\n    <option name=\"ALTERNATIVE_JRE_PATH\" value=\"25\" />\r\n    <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n    <option name=\"MAIN_CLASS_NAME\" value=\"com.example.demo.Launcher\" />\r\n    <module name=\"demo\" />\r\n    <option name=\"VM_PARAMETERS\" value=\"--module-path &quot;C:\\Users\\LamaA\\Java\\javafx-sdk-25.0.1\\lib&quot; --add-modules javafx.controls,javafx.fxml \" />\r\n    <extension name=\"coverage\">\r\n      <pattern>\r\n        <option name=\"PATTERN\" value=\"com.example.demo.*\" />\r\n        <option name=\"ENABLED\" value=\"true\" />\r\n      </pattern>\r\n    </extension>\r\n    <method v=\"2\">\r\n      <option name=\"Make\" enabled=\"true\" />\r\n    </method>\r\n  </configuration>\r\n</component>
+===================================================================
+diff --git a/.idea/runConfigurations/Launcher.xml b/.idea/runConfigurations/Launcher.xml
+--- a/.idea/runConfigurations/Launcher.xml	(revision dc2f838fd8be2b2fb9bb2883397aabc93507a71f)
++++ b/.idea/runConfigurations/Launcher.xml	(date 1778146340274)
+@@ -1,6 +1,6 @@
+ <component name="ProjectRunConfigurationManager">
+   <configuration default="false" name="Launcher" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
+-    <option name="ALTERNATIVE_JRE_PATH" value="25" />
++    <option name="ALTERNATIVE_JRE_PATH" value="zulu-25" />
+     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+     <option name="MAIN_CLASS_NAME" value="com.example.demo.Launcher" />
+     <module name="demo" />
