@@ -175,7 +175,7 @@ public class TrajectorySelectionController {
 
         return allRoutes.stream()
                 .filter(route -> route.getTransportType() == typeToFilter)
-                .map(Trajectory::getDeparture)
+                .map(route -> route.getDeparture().getName())
                 .distinct()
                 .sorted()
                 .toList();
@@ -187,8 +187,8 @@ public class TrajectorySelectionController {
 
         return allRoutes.stream()
                 .filter(route -> route.getTransportType() == typeToFilter)
-                .filter(route -> route.getDeparture().equals(start))
-                .map(Trajectory::getArrival)
+                .filter(route -> route.getDeparture().getName().equals(start))
+                .map(route -> route.getArrival().getName())
                 .distinct()
                 .sorted()
                 .toList();
@@ -238,8 +238,8 @@ public class TrajectorySelectionController {
 
         return allRoutes.stream()
                 .filter(route -> route.getTransportType() == typeToFilter)
-                .filter(route -> route.getDeparture().equals(start))
-                .filter(route -> route.getArrival().equals(end))
+                .filter(route -> route.getDeparture().getName().equals(start))
+                .filter(route -> route.getArrival().getName().equals(end))
                 .findFirst()
                 .orElse(null);
     }
@@ -316,8 +316,8 @@ public class TrajectorySelectionController {
         LocalTime departureTime = LocalTime.parse(selectedDepartureTime);
         LocalTime arrivalTime = departureTime.plusMinutes(selectedTrajectory.getTravelMinutes());
 
-        detailsDeparture.setText(selectedTrajectory.getDeparture());
-        detailsArrival.setText(selectedTrajectory.getArrival());
+        detailsDeparture.setText(selectedTrajectory.getDeparture().getName());
+        detailsArrival.setText(selectedTrajectory.getArrival().getName());
         detailsDepartureTime.setText(timeFormat.format(departureTime));
         detailsArrivalTime.setText(timeFormat.format(arrivalTime));
         detailsDuration.setText(selectedTrajectory.getDurationString());
