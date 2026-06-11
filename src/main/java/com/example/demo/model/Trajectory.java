@@ -15,13 +15,15 @@ public class Trajectory {
     private final List<Departure> departures;
     private final int travelMinutes;
     private final TransportType transportType;
+    private final boolean wheelchairCompatibility;
 
-    public Trajectory(Station departure, Station arrival, List<String> departureTimes, int travelMinutes, TransportType transportType) {
+    public Trajectory(Station departure, Station arrival, List<String> departureTimes, int travelMinutes, TransportType transportType, boolean wheelchairCompatibility) {
         this.departure = departure;
         this.arrival = arrival;
         this.departures = List.copyOf(Departure.fromStrings(departureTimes));
         this.travelMinutes = travelMinutes;
         this.transportType = transportType;
+        this.wheelchairCompatibility = wheelchairCompatibility;
     }
 
 
@@ -56,6 +58,8 @@ public class Trajectory {
     public int getTravelMinutes() {
         return travelMinutes;
     }
+
+    public boolean isWheelchairCompatibility() {return wheelchairCompatibility; }
 
     public String getDurationString() {
         int hours = travelMinutes / 60;

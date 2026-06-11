@@ -23,6 +23,12 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+
+
 public class TrajectorySelectionController {
     @FXML
     private ComboBox<String> startStationBox;
@@ -175,6 +181,42 @@ public class TrajectorySelectionController {
         timesList.setOnMouseClicked(event -> {
             if (timesList.getSelectionModel().getSelectedItem() != null) {
                 onTravelSelected();
+            }
+        });
+
+        timesList.setCellFactory(listView -> new ListCell<>() {
+            private final Image wheelchairBlueIcon = new Image(getClass().getResource("/icons/wheelchair blue.png").toExternalForm());
+            private final Image wheelchairRedIcon = new Image(getClass().getResource("/icons/wheelchair red.png").toExternalForm());
+            private final ImageView wheelchairIcon = new ImageView();
+
+            {
+                wheelchairIcon.setFitWidth(46);
+                wheelchairIcon.setFitHeight(46);
+                wheelchairIcon.setPreserveRatio(true);
+                wheelchairIcon.setSmooth(false);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+
+                Trajectory selected = findSelectedTrajectory();
+
+                setText(item);
+
+                if (selected != null && selected.isWheelchairCompatibility()) {
+                    wheelchairIcon.setImage(wheelchairBlueIcon);
+                } else {
+                    wheelchairIcon.setImage(wheelchairRedIcon);
+                }
+
+                setGraphic(wheelchairIcon);
             }
         });
 
