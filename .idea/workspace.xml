@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1ebade44-7eb7-4389-8500-41007256d128" name="Changes" comment="Bug gefikst waarbij Selection button twee keer voorkwam.">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_28-5-2026_09_55_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_28-5-2026_09_55__Changes_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_28-5-2026_23_51_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_28-5-2026_23_51__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_29-5-2026_09_44_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_29-5-2026_09_44__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_28-5-2026_09_55_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_28-5-2026_09_55__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/model/FixedRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/model/FixedRoutes.java" afterDir="false" />
+    <list default="true" id="1ebade44-7eb7-4389-8500-41007256d128" name="Changes" comment="Made an enum to start indication business of a trip">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/TrajectorySelectionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/TrajectorySelectionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/model/Trajectory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/model/Trajectory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +17,7 @@
   <component name="CopilotChats">
     <option name="panelChat">
       <chat>
-        <option name="activeSessionId" value="479f8eb4-fb82-47a2-8911-768d5fcd0d05" />
+        <option name="activeSessionId" value="087f3bdc-57e9-41a9-8976-8f43ba6fc266" />
         <option name="sessions">
           <session>
             <option name="chatType" value="PANEL" />
@@ -176,6 +170,23 @@
             <option name="modelValue" value="auto" />
             <option name="targetType" value="LOCAL" />
           </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="e2624669-8e59-48a8-b2f0-55604c87349b" />
+            <option name="modeId" value="Ask" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="auto" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="087f3bdc-57e9-41a9-8976-8f43ba6fc266" />
+            <option name="modeId" value="Agent" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="auto" />
+            <option name="status" value="Completed" />
+            <option name="targetType" value="LOCAL" />
+          </session>
         </option>
         <option name="type" value="PANEL" />
       </chat>
@@ -197,10 +208,24 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="feature/crowdIndicator" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="master" />
@@ -259,7 +284,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "addTrajectory",
+    "git-widget-placeholder": "feature/crowdIndicator",
     "kotlin-language-version-configured": "true",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
@@ -320,6 +345,8 @@
       <workItem from="1780561618717" duration="3474000" />
       <workItem from="1780645051900" duration="3775000" />
       <workItem from="1780920287850" duration="793000" />
+      <workItem from="1780939966957" duration="1265000" />
+      <workItem from="1781042677595" duration="6180000" />
     </task>
     <task id="LOCAL-00001" summary="test to gitignore">
       <option name="closed" value="true" />
@@ -433,7 +460,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779839061772</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Made an enum to start indication business of a trip">
+      <option name="closed" value="true" />
+      <created>1781044399045</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1781044399045</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -453,7 +488,8 @@
     <MESSAGE value="De bus trein knop is nu werkzaam. Er zijn verschillende tijden te zien bij bus en verschillende tijden bij trein." />
     <MESSAGE value="fixed merged conflict" />
     <MESSAGE value="Bug gefikst waarbij Selection button twee keer voorkwam." />
-    <option name="LAST_COMMIT_MESSAGE" value="Bug gefikst waarbij Selection button twee keer voorkwam." />
+    <MESSAGE value="Made an enum to start indication business of a trip" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made an enum to start indication business of a trip" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
