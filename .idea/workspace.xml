@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb6a1df6-ce0a-49f7-84f2-699b7ace109a" name="Changes" comment="Bug gefikst waarbij Selection button twee keer voorkwam.">
+    <list default="true" id="eb6a1df6-ce0a-49f7-84f2-699b7ace109a" name="Changes" comment="reis informatie weergave nadat een reistijd wordt geselecteerd">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/TrajectorySelectionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/TrajectorySelectionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/model/FixedRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/model/FixedRoutes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/model/Trajectory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/model/Trajectory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,10 +39,14 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/crowdIndicator" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -52,13 +59,13 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Launcher.executor": "Run",
-    "Application.launcher.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "ToolWindow.GitHub Copilot Chat.ShowToolbar": "false",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "wheelchairCompatible",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/kyano/IdeaProjects/2025-AD-SD-Template-Project4/src/main/resources/icons",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -67,14 +74,14 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="launcher" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="com.example.demo.app.Launcher" />
-      <module name="demo" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\kyano\IdeaProjects\2025-AD-SD-Template-Project4\src\main\resources\icons" />
+      <recent name="C:\Users\kyano\IdeaProjects\2025-AD-SD-Template-Project4\src\main\java\com\example\demo\model" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\kyano\IdeaProjects\2025-AD-SD-Template-Project4\src\main\resources\icons" />
+    </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
