@@ -23,7 +23,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -120,16 +119,24 @@ public class TrajectorySelectionController {
 
         infoLabel.setText("");
 
-        // Cell factory: render time + arrival + duration and busy icons inline
+        // Cell factory: render time + arrival + duration, wheelchair icon, and busy status icons inline
         timesList.setCellFactory(lv -> new ListCell<>() {
+            private final Image wheelchairBlueIcon = new Image(getClass().getResource("/icons/wheelchair blue.png").toExternalForm());
+            private final Image wheelchairRedIcon = new Image(getClass().getResource("/icons/wheelchair red.png").toExternalForm());
             private final HBox root = new HBox(10);
             private final Label textLabel = new Label();
+            private final ImageView wheelchairIcon = new ImageView();
             private final HBox iconsBox = new HBox(4);
 
             {
+                wheelchairIcon.setFitWidth(20);
+                wheelchairIcon.setFitHeight(20);
+                wheelchairIcon.setPreserveRatio(true);
+                wheelchairIcon.setSmooth(false);
+
                 root.setAlignment(Pos.CENTER_LEFT);
                 iconsBox.setAlignment(Pos.CENTER_LEFT);
-                root.getChildren().addAll(textLabel, iconsBox);
+                root.getChildren().addAll(textLabel, wheelchairIcon, iconsBox);
             }
 
             @Override
@@ -161,6 +168,13 @@ public class TrajectorySelectionController {
 
                 textLabel.setText(displayText);
 
+                // Set wheelchair icon based on trajectory wheelchair compatibility
+                if (route != null && route.isWheelchairCompatibility()) {
+                    wheelchairIcon.setImage(wheelchairBlueIcon);
+                } else {
+                    wheelchairIcon.setImage(wheelchairRedIcon);
+                }
+
                 // create icons based on BusyStatus
                 iconsBox.getChildren().clear();
                 BusyStatus bs = item.getBusyStatus();
@@ -184,41 +198,6 @@ public class TrajectorySelectionController {
             }
         });
 
-        timesList.setCellFactory(listView -> new ListCell<>() {
-            private final Image wheelchairBlueIcon = new Image(getClass().getResource("/icons/wheelchair blue.png").toExternalForm());
-            private final Image wheelchairRedIcon = new Image(getClass().getResource("/icons/wheelchair red.png").toExternalForm());
-            private final ImageView wheelchairIcon = new ImageView();
-
-            {
-                wheelchairIcon.setFitWidth(46);
-                wheelchairIcon.setFitHeight(46);
-                wheelchairIcon.setPreserveRatio(true);
-                wheelchairIcon.setSmooth(false);
-            }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || item == null) {
-                    setText(null);
-                    setGraphic(null);
-                    return;
-                }
-
-                Trajectory selected = findSelectedTrajectory();
-
-                setText(item);
-
-                if (selected != null && selected.isWheelchairCompatibility()) {
-                    wheelchairIcon.setImage(wheelchairBlueIcon);
-                } else {
-                    wheelchairIcon.setImage(wheelchairRedIcon);
-                }
-
-                setGraphic(wheelchairIcon);
-            }
-        });
 
         backButton.setOnAction(event -> onBack());
 
