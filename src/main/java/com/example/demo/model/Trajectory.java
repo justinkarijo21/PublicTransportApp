@@ -11,17 +11,12 @@ public class Trajectory {
 
     private final Station departure;
     private final Station arrival;
-    private final List<String> departureTimes;
-    private final String departure;
-    private final String arrival;
-    // new: internal representation of departures with status
+
     private final List<Departure> departures;
     private final int travelMinutes;
     private final TransportType transportType;
 
     public Trajectory(Station departure, Station arrival, List<String> departureTimes, int travelMinutes, TransportType transportType) {
-    // Constructor for backwards-compatibility: accept List<String> and convert to Departure objects
-    public Trajectory(String departure, String arrival, List<String> departureTimes, int travelMinutes, TransportType transportType) {
         this.departure = departure;
         this.arrival = arrival;
         this.departures = List.copyOf(Departure.fromStrings(departureTimes));
@@ -43,12 +38,13 @@ public class Trajectory {
         return arrival;
     }
 
+
     // new getter
     public List<Departure> getDepartures() {
         return departures;
     }
 
-    // compatibility method: returns old List<String>
+
     public List<String> getDepartureTimes() {
         List<String> times = new java.util.ArrayList<>();
         for (Departure d : departures) {
@@ -105,7 +101,7 @@ public class Trajectory {
             return time + " (" + busyStatus.getDescription() + ")";
         }
 
-        // Helper to convert old List<String> to List<Departure>
+
         public static List<Departure> fromStrings(List<String> times) {
             List<Departure> list = new java.util.ArrayList<>();
             Random rnd = new Random();
@@ -117,7 +113,7 @@ public class Trajectory {
             return list;
         }
 
-        // Basic heuristic: rush hours -> FAST, shoulder -> MEDIUM, otherwise SLOW. Add small randomness.
+
         private static BusyStatus assignBusyStatus(String timeStr, Random rnd) {
             try {
                 LocalTime t = LocalTime.parse(timeStr);
