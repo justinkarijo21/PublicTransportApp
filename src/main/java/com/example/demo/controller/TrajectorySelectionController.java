@@ -4,14 +4,20 @@ import com.example.demo.model.TransportType;
 import com.example.demo.model.Trajectory;
 import com.example.demo.app.AppFactory;
 import com.example.demo.view.TransportTypeBox;
+import com.example.demo.view.BusyStatus;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
+import javafx.geometry.Pos;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -34,7 +40,7 @@ public class TrajectorySelectionController {
     private Label infoLabel;
 
     @FXML
-    private ListView<String> timesList;
+    private ListView<Trajectory.Departure> timesList;
 
     @FXML
     private TransportTypeBox transportTypeBox;
@@ -73,7 +79,7 @@ public class TrajectorySelectionController {
     private List<String> allStartStations = List.of();
     private List<String> currentEndStations = List.of();
     private Trajectory selectedTrajectory;
-    private String selectedDepartureTime;
+    private Trajectory.Departure selectedDeparture;
     private boolean updatingComboBoxItems;
 
     @FXML
@@ -107,6 +113,64 @@ public class TrajectorySelectionController {
         fillStationBoxes();
 
         infoLabel.setText("");
+
+        // Cell factory: render time + arrival + duration and busy icons inline
+        timesList.setCellFactory(lv -> new ListCell<>() {
+            private final HBox root = new HBox(10);
+            private final Label textLabel = new Label();
+            private final HBox iconsBox = new HBox(4);
+
+            {
+                root.setAlignment(Pos.CENTER_LEFT);
+                iconsBox.setAlignment(Pos.CENTER_LEFT);
+                root.getChildren().addAll(textLabel, iconsBox);
+            }
+
+            @Override
+            protected void updateItem(Trajectory.Departure item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+
+                // compute arrival time using currently selected route travelMinutes
+                Trajectory route = findSelectedTrajectory();
+                String displayText;
+                if (route != null) {
+                    DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+                    try {
+                        LocalTime departureTime = LocalTime.parse(item.getTime());
+                        LocalTime arrivalTime = departureTime.plusMinutes(route.getTravelMinutes());
+                        displayText = "Vertrek " + timeFormat.format(departureTime)
+                                + "   Aankomst " + timeFormat.format(arrivalTime)
+                                + "   Duur: " + route.getDurationString();
+                    } catch (Exception e) {
+                        displayText = item.getTime() + "   Duur: " + route.getDurationString();
+                    }
+                } else {
+                    displayText = item.getTime();
+                }
+
+                textLabel.setText(displayText);
+
+                // create icons based on BusyStatus
+                iconsBox.getChildren().clear();
+                BusyStatus bs = item.getBusyStatus();
+                if (bs != null) {
+                    for (int i = 0; i < bs.getAmountIcons(); i++) {
+                        Circle c = new Circle(6, bs.getColor());
+                        c.setStroke(javafx.scene.paint.Color.DARKGRAY);
+                        iconsBox.getChildren().add(c);
+                    }
+                    // tooltip with description
+                    Tooltip.install(root, new Tooltip(bs.getDescription()));
+                }
+
+                setGraphic(root);
+            }
+        });
 
         timesList.setOnMouseClicked(event -> {
             if (timesList.getSelectionModel().getSelectedItem() != null) {
@@ -273,32 +337,18 @@ public class TrajectorySelectionController {
         }
 
         infoLabel.setText("");
-        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
-        var items = selected.getDepartureTimes().stream()
-                .map(departure -> {
-                    LocalTime departureTime = LocalTime.parse(departure);
-                    LocalTime arrivalTime = departureTime.plusMinutes(selected.getTravelMinutes());
-                    return "Vertrek " + timeFormat.format(departureTime)
-                            + "   Aankomst " + timeFormat.format(arrivalTime)
-                            + "   Duur: " + selected.getDurationString();
-                })
-                .toList();
-
-        timesList.setItems(FXCollections.observableArrayList(items));
+        // ListView now shows Trajectory.Departure objects directly
+        timesList.setItems(FXCollections.observableArrayList(selected.getDepartures()));
     }
 
     private void onTravelSelected() {
-        int selectedIndex = timesList.getSelectionModel().getSelectedIndex();
-        if (selectedIndex < 0) {
-            return;
-        }
+        Trajectory.Departure sel = timesList.getSelectionModel().getSelectedItem();
+        if (sel == null) return;
 
         selectedTrajectory = findSelectedTrajectory();
-        if (selectedTrajectory == null) {
-            return;
-        }
+        if (selectedTrajectory == null) return;
 
-        selectedDepartureTime = selectedTrajectory.getDepartureTimes().get(selectedIndex);
+        selectedDeparture = sel;
         showDetailsPane();
     }
 
@@ -312,8 +362,10 @@ public class TrajectorySelectionController {
     }
 
     private void updateDetailsDisplay() {
+        if (selectedTrajectory == null || selectedDeparture == null) return;
+
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime departureTime = LocalTime.parse(selectedDepartureTime);
+        LocalTime departureTime = LocalTime.parse(selectedDeparture.getTime());
         LocalTime arrivalTime = departureTime.plusMinutes(selectedTrajectory.getTravelMinutes());
 
         detailsDeparture.setText(selectedTrajectory.getDeparture());
@@ -322,7 +374,12 @@ public class TrajectorySelectionController {
         detailsArrivalTime.setText(timeFormat.format(arrivalTime));
         detailsDuration.setText(selectedTrajectory.getDurationString());
         detailsTransportType.setText(selectedTrajectory.getTransportType().toString());
-        detailsTimes.setText(String.join(", ", selectedTrajectory.getDepartureTimes()));
+
+        String timesWithStatus = selectedTrajectory.getDepartures().stream()
+                .map(d -> d.getTime() + " (" + d.getBusyStatus().getDescription() + ")")
+                .reduce((a, b) -> a + ", " + b)
+                .orElse("");
+        detailsTimes.setText(timesWithStatus);
     }
 
     private void showSearchPane() {
@@ -337,6 +394,6 @@ public class TrajectorySelectionController {
         showSearchPane();
         timesList.getSelectionModel().clearSelection();
         selectedTrajectory = null;
-        selectedDepartureTime = null;
+        selectedDeparture = null;
     }
 }
