@@ -5,13 +5,13 @@ import java.util.List;
 public class Trajectory {
     private static final String ARROW = " → ";
 
-    private final String departure;
-    private final String arrival;
+    private final Station departure;
+    private final Station arrival;
     private final List<String> departureTimes;
     private final int travelMinutes;
     private final TransportType transportType;
 
-    public Trajectory(String departure, String arrival, List<String> departureTimes, int travelMinutes, TransportType transportType) {
+    public Trajectory(Station departure, Station arrival, List<String> departureTimes, int travelMinutes, TransportType transportType) {
         this.departure = departure;
         this.arrival = arrival;
         this.departureTimes = departureTimes;
@@ -23,11 +23,11 @@ public class Trajectory {
         return transportType;
     }
 
-    public String getDeparture() {
+    public Station getDeparture() {
         return departure;
     }
 
-    public String getArrival() {
+    public Station getArrival() {
         return arrival;
     }
 
